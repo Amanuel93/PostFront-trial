@@ -9,6 +9,7 @@ const initialState = {
   showNext:false,
   chapterId: null,
   trainingChapter:[],
+  chapterSubmissionStatus: null,
 };
 
 const chapterSlice = createSlice({
@@ -76,6 +77,18 @@ const chapterSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    submitChapterAnswerStart: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    submitChapterAnswerSuccess: (state, action) => {
+      state.loading = false;
+      state.chapterSubmissionStatus = action.payload;
+    },
+    submitChapterAnswerFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     clearStatus: (state) => {
       state.success = null;
       state.error = null;
@@ -105,6 +118,9 @@ export const {
   deleteChapterStart,
   deleteChapterSuccess,
   deleteChapterFailure,
+  submitChapterAnswerStart,
+  submitChapterAnswerSuccess,
+  submitChapterAnswerFailure,
   clearStatus,
   resetChapter,
 } = chapterSlice.actions;

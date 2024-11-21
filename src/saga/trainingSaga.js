@@ -16,6 +16,9 @@ import {
   deleteTrainingStart,
   deleteTrainingSuccess,
   deleteTrainingFailure,
+  saveTrainingAnswersStart,
+  saveTrainingAnswersSuccess,
+  saveTrainingAnswersFailure,
 } from '../redux/trainingSlice';
 import axiosInstance from '@/utility/axiosInstance';
 
@@ -92,10 +95,38 @@ function* deleteTrainingSaga(action) {
   }
 }
 
+function* saveTrainingAnswersSaga(action) {
+  try {
+    const {trainingId,answers} = action.payload;
+    const url = `trainee/submit/${trainingId}`
+    const response = yield call(axiosInstance.post, url, answers);
+    yield put(saveTrainingAnswersSuccess(response.data));
+    console.log(response.data)
+  } catch (error) {
+    // yield put(saveTrainingAnswersFailure(error.message));
+    const errorMessage = error.response?.data?.message || error.message;
+      if (error.response) {
+        // The request was made, but the server responded with a status code outside the 2xx range
+        console.error("Server error:", error.response.data);
+        yield put(saveTrainingAnswersFailure(error.response.data.message));
+      } else if (error.request) {
+        // The request was made, but no response was received (network error)
+        console.error("Network error:", error.request);
+        yield put(saveTrainingAnswersFailure("Network error: Unable to reach the server."));
+      } else {
+        // Something happened in setting up the request that triggered an error
+        console.error("Error in setting up request:", error.message);
+        yield put(saveTrainingAnswersFailure("An unexpected error occurred."));
+      }
+    
+  }
+}
+
 export default function* trainingSaga() {
   yield takeLatest('training/fetchTrainingsStart', fetchTrainingsSaga);
   yield takeLatest('training/fetchTrainingByIdStart', fetchTrainingByIdSaga);
   yield takeLatest('training/createTrainingStart', createTrainingSaga);
   yield takeLatest('training/updateTrainingStart', updateTrainingSaga);
   yield takeLatest('training/deleteTrainingStart', deleteTrainingSaga);
+  yield takeLatest('training/saveTrainingAnswersStart', saveTrainingAnswersSaga);
 }

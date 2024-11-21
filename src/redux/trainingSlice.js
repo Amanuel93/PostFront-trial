@@ -9,6 +9,7 @@ const initialState = {
   error: null,
   showNext:false,
   trainingId: null,
+  trainingSubmissionStatus: null,
 };
 
 const trainingSlice = createSlice({
@@ -71,6 +72,18 @@ const trainingSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    saveTrainingAnswersStart: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    saveTrainingAnswersSuccess: (state, action) => {
+      state.loading = false;
+      state.trainingSubmissionStatus = action.payload;
+    },
+    saveTrainingAnswersFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     clearStatus: (state) => {
         state.success = null;
         state.error = null;
@@ -94,6 +107,9 @@ export const {
   deleteTrainingStart,
   deleteTrainingSuccess,
   deleteTrainingFailure,
+  saveTrainingAnswersStart,
+  saveTrainingAnswersSuccess,
+  saveTrainingAnswersFailure,
   clearStatus,
   resetTraining,
 } = trainingSlice.actions;

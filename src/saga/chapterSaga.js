@@ -18,6 +18,9 @@ import {
   deleteChapterStart,
   deleteChapterSuccess,
   deleteChapterFailure,
+  submitChapterAnswerStart,
+  submitChapterAnswerSuccess,
+  submitChapterAnswerFailure,
 } from '../redux/chapterSlice';
 import axiosInstance from '@/utility/axiosInstance'; // Assuming `axiosInstance` is set up to handle requests
 
@@ -125,6 +128,32 @@ function* deleteChapterSaga(action) {
   }
 }
 
+function* submitChapterAnswerSaga(action) {
+  try {
+    const {chapterId, formattedAnswers} = action.payload;
+    const url = `trainee/track-progress/${chapterId}`
+    const response = yield call(axiosInstance.post, url, formattedAnswers);
+    yield put(submitChapterAnswerSuccess(response.data));
+    console.log(response.data);
+  } catch (error) {
+    // yield put(submitChapterAnswerFailure(error.message));
+     const errorMessage = error.response?.data?.message || error.message;
+      if (error.response) {
+        // The request was made, but the server responded with a status code outside the 2xx range
+        console.error("Server error:", error.response.data);
+        yield put(submitChapterAnswerFailure(error.response.data.details || error.response.data.message));
+      } else if (error.request) {
+        // The request was made, but no response was received (network error)
+        console.error("Network error:", error.request);
+        yield put(submitChapterAnswerFailure("Network error: Unable to reach the server."));
+      } else {
+        // Something happened in setting up the request that triggered an error
+        console.error("Error in setting up request:", error.message);
+        yield put(submitChapterAnswerFailure("An unexpected error occurred."));
+      }
+  }
+}
+
 // Watcher saga
 export default function* chapterSaga() {
   yield takeLatest(fetchChaptersStart.type, fetchChaptersSaga);
@@ -133,4 +162,5 @@ export default function* chapterSaga() {
   yield takeLatest(createChapterStart.type, createChapterSaga);
   yield takeLatest(updateChapterStart.type, updateChapterSaga);
   yield takeLatest(deleteChapterStart.type, deleteChapterSaga);
+  yield takeLatest(submitChapterAnswerStart.type, submitChapterAnswerSaga);
 }
