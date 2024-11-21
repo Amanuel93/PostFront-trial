@@ -73,11 +73,11 @@ function* createChapterSaga(action) {
     try {
       const { id } = action.payload;
       const url = `admin/getChapter/${id}`;
-      // console.log(id)
       // Correcting the axiosInstance.get call by passing url in parentheses
       const response = yield call(axiosInstance.get, url);
       yield put(fetchChapterByIdSuccess(response.data));
       console.log(response.data)
+      console.log(id)
     } catch (error) {
       yield put(fetchChapterByIdFailure(error.message));
     }

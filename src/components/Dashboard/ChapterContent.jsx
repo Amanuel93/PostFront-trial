@@ -62,6 +62,7 @@ const ChapterContent = () => {
                       style={{ height:"100%",padding:0, margin: 0 }}
                       pluginRenderers={DocViewerRenderers} 
                       onError={(error) => console.error("DocViewer Error:", error)}
+                      config={{ header: { disableHeader: true } }}
                       />
                 </div>
             ) : (

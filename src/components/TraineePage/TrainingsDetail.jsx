@@ -108,18 +108,22 @@
 import React, { useState} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChapterByIdStart, resetChapter } from '../../redux/chapterSlice';
+import { fetchChapterByIdStart, resetChapter, fetchTrainingChapterByIdStart } from '../../redux/chapterSlice';
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 // import "@cyntler/react-doc-viewer/dist/index.css";
 
 const  TrainingsDetail = () => {
     const [answers, setAnswers] = useState({});
     const [showReadingMaterial, setShowReadingMaterial] = useState(true);
+    const [currentChapterIndex, setCurrentChapterIndex] = useState(0); 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { chapterId, trainingId } = useParams();  // Added trainingId for navigation
+    const { trainingId } = useParams();  // Added trainingId for navigation
     
-    const { chapter, loading, error } = useSelector((state) => state.chapter);
+    const { trainingChapter, chapter, loading, error } = useSelector((state) => state.chapter);
+   
+    // const chapterId = 3
+    const chapterId = trainingChapter?.chapters?.[currentChapterIndex]?.id;
 
     // Fetch chapter data
     React.useEffect(() => {
@@ -128,6 +132,13 @@ const  TrainingsDetail = () => {
             dispatch(fetchChapterByIdStart({ id:chapterId }));
         }
     }, [dispatch, chapterId]);
+
+    // Fetch all chapters when component mounts
+   React.useEffect(() => {
+    if (trainingId) {
+        dispatch(fetchTrainingChapterByIdStart({id: trainingId}));
+        }
+    }, [dispatch, trainingId]);
 
     const handleAnswerChange = (questionId, answer) => {
         setAnswers((prevAnswers) => ({
@@ -142,11 +153,11 @@ const  TrainingsDetail = () => {
     };
 
     const handleNextChapter = () => {
-        const nextChapterId = parseInt(chapterId) + 1;  // Logic to get next chapter ID
-        navigate(`/trainings/${trainingId}/chapters/${nextChapterId}`);
-    };
+        setCurrentChapterIndex((prevIndex) => prevIndex + 1); // Decrement the index
+     };
 
     console.log(chapter)
+    console.log(trainingChapter);
     console.log(chapterId)
     const questions = chapter?.Questions || [];
     // const readingMaterialUri = `http://localhost:5000/${chapter?.readingMaterial.replace(/\\/g, '/')}`;
@@ -173,7 +184,7 @@ const  TrainingsDetail = () => {
             {!showReadingMaterial ? (
                 <div className="mt-6 space-y-4">
                     <h2 className="text-2xl font-bold text-center text-indigo-600 mb-4">Questions</h2>
-                    <form>
+                    <form className='space-y-3'>
                         {questions.map((question, index) => (
                             <div key={index} className="p-4 bg-indigo-100 rounded-lg shadow">
                                 <div className="flex justify-between items-center">
@@ -235,6 +246,7 @@ const  TrainingsDetail = () => {
                         pluginRenderers={DocViewerRenderers} 
                         style={{ height: "100%", padding: 0, margin: 0 }}
                         onError={(error) => console.error("DocViewer Error:", error)}
+                        config={{ header: { disableHeader: true } }}
                     />
                 </div>
             )}

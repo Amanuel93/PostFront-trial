@@ -6,6 +6,7 @@ import {
   fetchTrainingByIdStart,
   resetTraining,
 } from '../../redux/trainingSlice';
+import { fetchTrainingChapterByIdStart } from '../../redux/chapterSlice';
 import { startTrainingStart } from '../../redux/startTraining'; // import the correct action
 
 export default function TrainingCard() {
@@ -25,6 +26,7 @@ export default function TrainingCard() {
     }
   }, [dispatch, trainingId]);
 
+
   const handlePasscodeChange = (e) => {
     setPasscode(e.target.value);
   };
@@ -36,7 +38,7 @@ export default function TrainingCard() {
   console.log(training?.title);
 
   if(progress){
-    navigate(`Training/${trainingId}/details/3`)
+    navigate(`Training/${trainingId}/details`)
   }
 
   return (

@@ -207,7 +207,7 @@ const router = createBrowserRouter([
     element:<ExamLayout/>,
     children:[
      {
-      path: ":trainingId/details/:chapterId",
+      path: ":trainingId/details",
       element: <TrainingsDetail />
      },
     {
