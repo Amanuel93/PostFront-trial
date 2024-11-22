@@ -30,8 +30,10 @@ export default function Login() {
     if (user) {
       if (user.role === 'trainee') {
         navigate('/Trainee');
-      } else {
+      } else if(user.role === 'admin' || user.role === 'super-admin') {
         navigate('/Dashboard');
+      } else{
+        navigate('/Login')
       }
     }
   }, [user, navigate]);

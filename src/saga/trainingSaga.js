@@ -98,10 +98,10 @@ function* deleteTrainingSaga(action) {
 function* saveTrainingAnswersSaga(action) {
   try {
     const {trainingId,answers} = action.payload;
+    console.log(answers)
     const url = `trainee/submit/${trainingId}`
     const response = yield call(axiosInstance.post, url, answers);
     yield put(saveTrainingAnswersSuccess(response.data));
-    console.log(response.data)
   } catch (error) {
     // yield put(saveTrainingAnswersFailure(error.message));
     const errorMessage = error.response?.data?.message || error.message;
@@ -118,7 +118,6 @@ function* saveTrainingAnswersSaga(action) {
         console.error("Error in setting up request:", error.message);
         yield put(saveTrainingAnswersFailure("An unexpected error occurred."));
       }
-    
   }
 }
 

@@ -13,10 +13,10 @@ const authSlice = createSlice({
     registerUserStart: (state, action) => {
       state.loading = true;
       state.error = null;
-      localStorage.setItem('user', JSON.stringify(action.payload)); // Save user to localStorage as a string
     },
     registerUserSuccess: (state, action) => {
       state.loading = false;
+      state.successMessage = 'Successfully registered'
     },
     registerUserFailure: (state, action) => {
       state.loading = false;

@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
   const dispatch = useDispatch();
-  const { loading, error, verificationToken } = useSelector((state) => state.auth);
+  const { loading, error, successMessage } = useSelector((state) => state.auth);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -49,12 +49,12 @@ export default function SignUp() {
 
   // Navigate after successful registration
   useEffect(() => {
-    if (verificationToken) {
+    if (successMessage) {
       setTimeout(() => {
         navigate('/Login'); // Navigate to the Login page after a delay
       }, 2000); // Adjust the delay time as needed (2000 ms = 2 seconds)
     }
-  }, [verificationToken, navigate]);
+  }, [successMessage, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -149,7 +149,7 @@ export default function SignUp() {
           </div>
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          {verificationToken && (
+          {successMessage && (
             <p className="text-green-500 text-sm">Registration successful! Verify your email.</p>
           )}
 

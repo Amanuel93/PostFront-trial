@@ -106,195 +106,21 @@
 // export default TrainingsDetail;
 
 
-
-
-
-// import React, { useState} from 'react';
-// import { useNavigate, useParams } from 'react-router-dom';
+// import React, { useState, useEffect } from "react";
+// import { useNavigate, useParams } from "react-router-dom";
 // import { useDispatch, useSelector } from "react-redux";
-// import { fetchChapterByIdStart, resetChapter, fetchTrainingChapterByIdStart } from '../../redux/chapterSlice';
-// import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
-// // import "@cyntler/react-doc-viewer/dist/index.css";
-
-// const  TrainingsDetail = () => {
-//     const [answers, setAnswers] = useState({});
-//     const [showReadingMaterial, setShowReadingMaterial] = useState(true);
-//     const [currentChapterIndex, setCurrentChapterIndex] = useState(0); 
-//     const navigate = useNavigate();
-//     const dispatch = useDispatch();
-//     const { trainingId } = useParams();  // Added trainingId for navigation
-    
-//     const { trainingChapter, chapter, loading, error } = useSelector((state) => state.chapter);
-   
-//     // const chapterId = 3
-//     const chapterId = trainingChapter?.chapters?.[currentChapterIndex]?.id;
-
-//     // Fetch chapter data
-//     React.useEffect(() => {
-//         dispatch(resetChapter());
-//         if (chapterId) {
-//             dispatch(fetchChapterByIdStart({ id:chapterId }));
-//         }
-//     }, [dispatch, chapterId]);
-
-//     // Fetch all chapters when component mounts
-//    React.useEffect(() => {
-//     if (trainingId) {
-//         dispatch(fetchTrainingChapterByIdStart({id: trainingId}));
-//         }
-//     }, [dispatch, trainingId]);
-
-//     const handleAnswerChange = (questionId, answer) => {
-//         setAnswers((prevAnswers) => ({
-//             ...prevAnswers,
-//             [questionId]: answer,
-//         }));
-//     };
-
-//     const handleSubmit = () => {
-//         // Here you would send the answers to the backend
-//         console.log(answers);
-//     };
-
-//     const handleNextChapter = () => {
-//         setCurrentChapterIndex((prevIndex) => prevIndex + 1); // Decrement the index
-//      };
-
-//     console.log(chapter)
-//     console.log(trainingChapter);
-//     console.log(chapterId)
-//     const questions = chapter?.Questions || [];
-//     // const readingMaterialUri = `http://localhost:5000/${chapter?.readingMaterial.replace(/\\/g, '/')}`;
-
-//     const docs = [
-//       { 
-//           uri: `http://localhost:5000/${chapter?.readingMaterial.replace(/\\/g, '/')}`,
-//           fileType: "pdf",
-//       }
-//     ];
-//     // Check if this is the last chapter
-//     const isLastChapter = false; // You can dynamically set this based on the total number of chapters
-//     const totalChapters = 5; // Set the total number of chapters for this training (can come from your backend)
-
-//     return (
-//         <div className="max-w-6xl mx-auto mt-2 px-6 bg-white rounded-lg shadow-lg p-2">
-//             <button
-//                 onClick={() => setShowReadingMaterial(!showReadingMaterial)}
-//                 className="mb-2 px-4 py-2 bg-indigo-500 text-white font-semibold rounded-full shadow-md hover:bg-indigo-600 transition duration-200"
-//             >
-//                 {showReadingMaterial ? "View Questions" : "View Reading Material"}
-//             </button>
-
-//             {!showReadingMaterial ? (
-//                 <div className="mt-6 space-y-4">
-//                     <h2 className="text-2xl font-bold text-center text-indigo-600 mb-4">Questions</h2>
-//                     <form className='space-y-3'>
-//                         {questions.map((question, index) => (
-//                             <div key={index} className="p-4 bg-indigo-100 rounded-lg shadow">
-//                                 <div className="flex justify-between items-center">
-//                                     <p className="font-semibold text-gray-800">{`Q${index + 1}: ${question.questionText}`}</p>
-//                                 </div>
-//                                 {question.type === "multiple-choice" && (
-//                                     <ul className="pl-4 mt-2 space-y-1 text-gray-600 list-none">
-//                                         {question.options?.map((option, i) => (
-//                                             <li key={i} className="pl-4 text-gray-700 flex items-center space-x-2">
-//                                                 <input
-//                                                     type="radio"
-//                                                     id={`question${index}-option${i}`}
-//                                                     name={`question${index}`}
-//                                                     value={option}
-//                                                     checked={answers[`question${index}`] === option}
-//                                                     onChange={() => handleAnswerChange(`question${index}`, option)}
-//                                                     className="mr-2"
-//                                                 />
-//                                                 <label htmlFor={`question${index}-option${i}`}>{option}</label>
-//                                             </li>
-//                                         ))}
-//                                     </ul>
-//                                 )}
-//                                 {question.type === "true-false" && (
-//                                     <div className="mt-2">
-//                                         <label>
-//                                             <input
-//                                                 type="radio"
-//                                                 name={`question${index}`}
-//                                                 value="true"
-//                                                 checked={answers[`question${index}`] === 'true'}
-//                                                 onChange={() => handleAnswerChange(`question${index}`, 'true')}
-//                                                 className="mr-2"
-//                                             />
-//                                             True
-//                                         </label>
-//                                         <label className="ml-4">
-//                                             <input
-//                                                 type="radio"
-//                                                 name={`question${index}`}
-//                                                 value="false"
-//                                                 checked={answers[`question${index}`] === 'false'}
-//                                                 onChange={() => handleAnswerChange(`question${index}`, 'false')}
-//                                                 className="mr-2"
-//                                             />
-//                                             False
-//                                         </label>
-//                                     </div>
-//                                 )}
-//                             </div>
-//                         ))}
-//                     </form>
-//                 </div>
-//             ) : (
-//                 <div className="mt-6 p-0 m-0">
-//                     <DocViewer 
-//                         // documents={[{ uri: readingMaterialUri, fileType: "pdf" }]} 
-//                         documents={docs} 
-//                         pluginRenderers={DocViewerRenderers} 
-//                         style={{ height: "100%", padding: 0, margin: 0 }}
-//                         onError={(error) => console.error("DocViewer Error:", error)}
-//                         config={{ header: { disableHeader: true } }}
-//                     />
-//                 </div>
-//             )}
-
-//             <div className="flex justify-between mt-4">
-//                 <button
-//                     onClick={handleSubmit}
-//                     className="bg-green-500 text-white py-2 px-4 rounded-full"
-//                 >
-//                     Submit Answers
-//                 </button>
-
-//                 <button
-//                     onClick={handleNextChapter}
-//                     className={`bg-blue-500 text-white py-2 px-4 rounded-full ${isLastChapter ? 'bg-gray-500 cursor-not-allowed' : ''}`}
-//                     disabled={isLastChapter}
-//                 >
-//                     {isLastChapter ? "End of Training" : "Next Chapter"}
-//                 </button>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default  TrainingsDetail;
-
-
-
-
-// import React, { useState } from 'react';
-// import { useNavigate, useParams } from 'react-router-dom';
-// import { useDispatch, useSelector } from "react-redux";
-// import { 
-//   fetchChapterByIdStart, 
-//   resetChapter, 
-//   fetchTrainingChapterByIdStart, 
-//   submitChapterAnswerStart
-// } from '../../redux/chapterSlice'; // Assuming slices include both actions
-// import { saveTrainingAnswersStart } from '../../redux/trainingSlice';
+// import {
+//   fetchChapterByIdStart,
+//   resetChapter,
+//   fetchTrainingChapterByIdStart,
+//   submitChapterAnswerStart,
+// } from "../../redux/chapterSlice";
+// import { saveTrainingAnswersStart } from "../../redux/trainingSlice";
 // import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 
 // const TrainingsDetail = () => {
-//   const [answers, setAnswers] = useState({}); // Tracks current chapter answers
-//   const [trainingAnswers, setTrainingAnswers] = useState([]); // Tracks all chapters for the training
+//   const [answers, setAnswers] = useState({});
+//   const [trainingAnswers, setTrainingAnswers] = useState([]);
 //   const [showReadingMaterial, setShowReadingMaterial] = useState(true);
 //   const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
 
@@ -302,20 +128,40 @@
 //   const dispatch = useDispatch();
 //   const { trainingId } = useParams();
 
-//   const { trainingChapter, chapter, loading, error } = useSelector((state) => state.chapter);
+//   const { trainingChapter, chapter, loading, error } = useSelector(
+//     (state) => state.chapter
+//   );
 
 //   const chapterId = trainingChapter?.chapters?.[currentChapterIndex]?.id;
 
-//   // Fetch chapter data
-//   React.useEffect(() => {
+//   // Corrected formatAnswers function
+//   const formatAnswers = (answers, questions) => {
+//     return {
+//       answers: Object.entries(answers).map(([key, value]) => {
+//         const questionIndex = parseInt(key.replace("question", ""), 10); // Extract the index from the key
+//         const question = questions?.[questionIndex]; // Match the index to the question array
+
+//         if (!question) {
+//           console.warn(`Question not found for index ${questionIndex}`);
+//           return null;
+//         }
+
+//         return {
+//           questionId: question.id, // Use the correct question ID
+//           selectedOption: value,
+//         };
+//       }).filter((item) => item !== null), // Remove any null entries
+//     };
+//   };
+
+//   useEffect(() => {
 //     dispatch(resetChapter());
 //     if (chapterId) {
 //       dispatch(fetchChapterByIdStart({ id: chapterId }));
 //     }
 //   }, [dispatch, chapterId]);
 
-//   // Fetch all chapters when component mounts
-//   React.useEffect(() => {
+//   useEffect(() => {
 //     if (trainingId) {
 //       dispatch(fetchTrainingChapterByIdStart({ id: trainingId }));
 //     }
@@ -327,48 +173,35 @@
 //       [questionId]: answer,
 //     }));
 //   };
-//   console.log(answers)
 
-//   const formatAnswers = (answers, questions) => {
-//     return Object.entries(answers).map(([key, value]) => {
-//       const questionIndex = parseInt(key.replace('question', ''), 10);
-//       const questionId = questions[questionIndex]?.id; // Match with the actual question ID
-//       return {
-//         questionId,
-//         selectedOption: value,
-//       };
-//     });
-//   };
-  
-//   // Submit answers for the current chapter
 //   const handleChapterSubmit = () => {
 //     if (chapterId && chapter?.Questions) {
 //       const formattedAnswers = formatAnswers(answers, chapter.Questions);
-//       dispatch(submitChapterAnswerStart({ chapterId, answers: formattedAnswers }));
-//       setTrainingAnswers((prev) => [...prev, { chapterId, answers: formattedAnswers }]);
-//       setAnswers({}); // Reset chapter answers
+//       console.log("Formatted Answers:", formattedAnswers); // Debugging
+//       dispatch(submitChapterAnswerStart({ chapterId, ...formattedAnswers }));
+//       setTrainingAnswers((prev) => [...prev, ...formattedAnswers.answers]);
+//       setAnswers({});
 //     }
 //   };
-  
-//   // Submit all training-level answers
+
 //   const handleTrainingSubmit = () => {
 //     if (trainingId && trainingAnswers.length > 0) {
+//       console.log(trainingAnswers)
 //       dispatch(saveTrainingAnswersStart({ trainingId, answers: trainingAnswers }));
 //     }
 //   };
 
 //   const handleNextChapter = () => {
-//     setCurrentChapterIndex((prevIndex) => prevIndex + 1); // Increment chapter index
+//     setCurrentChapterIndex((prevIndex) => prevIndex + 1);
 //   };
 
 //   const docs = [
 //     {
-//       uri: `http://localhost:5000/${chapter?.readingMaterial.replace(/\\/g, '/')}`,
+//       uri: `http://localhost:5000/${chapter?.readingMaterial.replace(/\\/g, "/")}`,
 //       fileType: "pdf",
 //     },
 //   ];
 
-//   // Check if this is the last chapter
 //   const isLastChapter = currentChapterIndex >= (trainingChapter?.chapters?.length || 1) - 1;
 
 //   return (
@@ -386,9 +219,7 @@
 //           <form className="space-y-3">
 //             {chapter?.Questions?.map((question, index) => (
 //               <div key={index} className="p-4 bg-indigo-100 rounded-lg shadow">
-//                 <div className="flex justify-between items-center">
-//                   <p className="font-semibold text-gray-800">{`Q${index + 1}: ${question.questionText}`}</p>
-//                 </div>
+//                 <p className="font-semibold text-gray-800">{`Q${index + 1}: ${question.questionText}`}</p>
 //                 {question.type === "multiple-choice" && (
 //                   <ul className="pl-4 mt-2 space-y-1 text-gray-600 list-none">
 //                     {question.options?.map((option, i) => (
@@ -414,8 +245,8 @@
 //                         type="radio"
 //                         name={`question${index}`}
 //                         value="true"
-//                         checked={answers[`question${index}`] === 'true'}
-//                         onChange={() => handleAnswerChange(`question${index}`, 'true')}
+//                         checked={answers[`question${index}`] === "true"}
+//                         onChange={() => handleAnswerChange(`question${index}`, "true")}
 //                         className="mr-2"
 //                       />
 //                       True
@@ -425,8 +256,8 @@
 //                         type="radio"
 //                         name={`question${index}`}
 //                         value="false"
-//                         checked={answers[`question${index}`] === 'false'}
-//                         onChange={() => handleAnswerChange(`question${index}`, 'false')}
+//                         checked={answers[`question${index}`] === "false"}
+//                         onChange={() => handleAnswerChange(`question${index}`, "false")}
 //                         className="mr-2"
 //                       />
 //                       False
@@ -438,12 +269,11 @@
 //           </form>
 //         </div>
 //       ) : (
-//         <div className="mt-6 p-0 m-0">
+//         <div className="mt-6">
 //           <DocViewer
 //             documents={docs}
 //             pluginRenderers={DocViewerRenderers}
-//             style={{ height: "100%", padding: 0, margin: 0 }}
-//             onError={(error) => console.error("DocViewer Error:", error)}
+//             style={{ height: "100%" }}
 //             config={{ header: { disableHeader: true } }}
 //           />
 //         </div>
@@ -459,7 +289,7 @@
 
 //         <button
 //           onClick={handleNextChapter}
-//           className={`bg-blue-500 text-white py-2 px-4 rounded-full ${isLastChapter ? 'bg-gray-500 cursor-not-allowed' : ''}`}
+//           className={`bg-blue-500 text-white py-2 px-4 rounded-full ${isLastChapter ? "bg-gray-500 cursor-not-allowed" : ""}`}
 //           disabled={isLastChapter}
 //         >
 //           {isLastChapter ? "End of Training" : "Next Chapter"}
@@ -480,8 +310,6 @@
 
 // export default TrainingsDetail;
 
-
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -496,7 +324,7 @@ import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 
 const TrainingsDetail = () => {
   const [answers, setAnswers] = useState({});
-  const [trainingAnswers, setTrainingAnswers] = useState([]);
+  const [submittedAnswers, setSubmittedAnswers] = useState([]);
   const [showReadingMaterial, setShowReadingMaterial] = useState(true);
   const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
 
@@ -510,17 +338,15 @@ const TrainingsDetail = () => {
 
   const chapterId = trainingChapter?.chapters?.[currentChapterIndex]?.id;
 
+  // Format answers for submission
   const formatAnswers = (answers, questions) => {
     return {
       answers: Object.entries(answers).map(([key, value]) => {
         const questionIndex = parseInt(key.replace("question", ""), 10);
-        const questionId = questions[questionIndex]?.id;
-
-        return {
-          questionId,
-          selectedOption: value,
-        };
-      }),
+        const question = questions?.[questionIndex];
+        if (!question) return null;
+        return { questionId: question.id, selectedOption: value };
+      }).filter(Boolean), // Remove null entries
     };
   };
 
@@ -538,30 +364,28 @@ const TrainingsDetail = () => {
   }, [dispatch, trainingId]);
 
   const handleAnswerChange = (questionId, answer) => {
-    setAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [questionId]: answer,
-    }));
+    setAnswers((prev) => ({ ...prev, [questionId]: answer }));
   };
 
   const handleChapterSubmit = () => {
     if (chapterId && chapter?.Questions) {
       const formattedAnswers = formatAnswers(answers, chapter.Questions);
-      console.log(formattedAnswers);
       dispatch(submitChapterAnswerStart({ chapterId, ...formattedAnswers }));
-      setTrainingAnswers((prev) => [...prev, { chapterId, ...formattedAnswers }]);
+      setSubmittedAnswers((prev) => [...prev, ...formattedAnswers.answers]);
       setAnswers({});
     }
   };
 
   const handleTrainingSubmit = () => {
-    if (trainingId && trainingAnswers.length > 0) {
-      dispatch(saveTrainingAnswersStart({ trainingId, answers: trainingAnswers }));
+    if (trainingId && submittedAnswers.length > 0) {
+      dispatch(saveTrainingAnswersStart({ trainingId, answers: submittedAnswers }));
+      navigate("/trainings-summary"); // Redirect after submission
     }
   };
 
   const handleNextChapter = () => {
     setCurrentChapterIndex((prevIndex) => prevIndex + 1);
+    setShowReadingMaterial(true);
   };
 
   const docs = [
@@ -575,104 +399,111 @@ const TrainingsDetail = () => {
 
   return (
     <div className="max-w-6xl mx-auto mt-2 px-6 bg-white rounded-lg shadow-lg p-2">
-      <button
-        onClick={() => setShowReadingMaterial(!showReadingMaterial)}
-        className="mb-2 px-4 py-2 bg-indigo-500 text-white font-semibold rounded-full shadow-md hover:bg-indigo-600 transition duration-200"
-      >
-        {showReadingMaterial ? "View Questions" : "View Reading Material"}
-      </button>
-
-      {!showReadingMaterial ? (
-        <div className="mt-6 space-y-4">
-          <h2 className="text-2xl font-bold text-center text-indigo-600 mb-4">Questions</h2>
-          <form className="space-y-3">
-            {chapter?.Questions?.map((question, index) => (
-              <div key={index} className="p-4 bg-indigo-100 rounded-lg shadow">
-                <p className="font-semibold text-gray-800">{`Q${index + 1}: ${question.questionText}`}</p>
-                {question.type === "multiple-choice" && (
-                  <ul className="pl-4 mt-2 space-y-1 text-gray-600 list-none">
-                    {question.options?.map((option, i) => (
-                      <li key={i} className="pl-4 text-gray-700 flex items-center space-x-2">
-                        <input
-                          type="radio"
-                          id={`question${index}-option${i}`}
-                          name={`question${index}`}
-                          value={option}
-                          checked={answers[`question${index}`] === option}
-                          onChange={() => handleAnswerChange(`question${index}`, option)}
-                          className="mr-2"
-                        />
-                        <label htmlFor={`question${index}-option${i}`}>{option}</label>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {question.type === "true-false" && (
-                  <div className="mt-2">
-                    <label>
-                      <input
-                        type="radio"
-                        name={`question${index}`}
-                        value="true"
-                        checked={answers[`question${index}`] === "true"}
-                        onChange={() => handleAnswerChange(`question${index}`, "true")}
-                        className="mr-2"
-                      />
-                      True
-                    </label>
-                    <label className="ml-4">
-                      <input
-                        type="radio"
-                        name={`question${index}`}
-                        value="false"
-                        checked={answers[`question${index}`] === "false"}
-                        onChange={() => handleAnswerChange(`question${index}`, "false")}
-                        className="mr-2"
-                      />
-                      False
-                    </label>
-                  </div>
-                )}
-              </div>
-            ))}
-          </form>
-        </div>
+      {loading ? (
+        <div>Loading...</div>
+      ) : error ? (
+        <div>Error: {error.message}</div>
       ) : (
-        <div className="mt-6">
-          <DocViewer
-            documents={docs}
-            pluginRenderers={DocViewerRenderers}
-            style={{ height: "100%" }}
-            config={{ header: { disableHeader: true } }}
-          />
-        </div>
-      )}
-
-      <div className="flex justify-between mt-4">
-        <button
-          onClick={handleChapterSubmit}
-          className="bg-green-500 text-white py-2 px-4 rounded-full"
-        >
-          Submit Chapter Answers
-        </button>
-
-        <button
-          onClick={handleNextChapter}
-          className={`bg-blue-500 text-white py-2 px-4 rounded-full ${isLastChapter ? "bg-gray-500 cursor-not-allowed" : ""}`}
-          disabled={isLastChapter}
-        >
-          {isLastChapter ? "End of Training" : "Next Chapter"}
-        </button>
-
-        {isLastChapter && (
+        <>
           <button
-            onClick={handleTrainingSubmit}
-            className="bg-purple-500 text-white py-2 px-4 rounded-full"
+            onClick={() => setShowReadingMaterial(!showReadingMaterial)}
+            className="mb-2 px-4 py-2 bg-indigo-500 text-white font-semibold rounded-full shadow-md hover:bg-indigo-600 transition duration-200"
           >
-            Submit Training Answers
+            {showReadingMaterial ? "View Questions" : "View Reading Material"}
           </button>
-        )}
-      </div>
+
+          {!showReadingMaterial ? (
+            <div className="mt-6 space-y-4">
+              <h2 className="text-2xl font-bold text-center text-indigo-600 mb-4">Questions</h2>
+              <form className="space-y-3">
+                {chapter?.Questions?.map((question, index) => (
+                  <div key={index} className="p-4 bg-indigo-100 rounded-lg shadow">
+                    <p className="font-semibold text-gray-800">{`Q${index + 1}: ${question.questionText}`}</p>
+                    {question.type === "multiple-choice" && (
+                      <ul className="pl-4 mt-2 space-y-1 text-gray-600 list-none">
+                        {question.options?.map((option, i) => (
+                          <li key={i} className="pl-4 text-gray-700 flex items-center space-x-2">
+                            <input
+                              type="radio"
+                              id={`question${index}-option${i}`}
+                              name={`question${index}`}
+                              value={option}
+                              checked={answers[`question${index}`] === option}
+                              onChange={() => handleAnswerChange(`question${index}`, option)}
+                              className="mr-2"
+                            />
+                            <label htmlFor={`question${index}-option${i}`}>{option}</label>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {question.type === "true-false" && (
+                      <div className="mt-2">
+                        <label>
+                          <input
+                            type="radio"
+                            name={`question${index}`}
+                            value="true"
+                            checked={answers[`question${index}`] === "true"}
+                            onChange={() => handleAnswerChange(`question${index}`, "true")}
+                            className="mr-2"
+                          />
+                          True
+                        </label>
+                        <label className="ml-4">
+                          <input
+                            type="radio"
+                            name={`question${index}`}
+                            value="false"
+                            checked={answers[`question${index}`] === "false"}
+                            onChange={() => handleAnswerChange(`question${index}`, "false")}
+                            className="mr-2"
+                          />
+                          False
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </form>
+            </div>
+          ) : (
+            <div className="mt-6">
+              <DocViewer
+                documents={docs}
+                pluginRenderers={DocViewerRenderers}
+                style={{ height: "100%" }}
+                config={{ header: { disableHeader: true } }}
+              />
+            </div>
+          )}
+
+          <div className="flex justify-between mt-4">
+            <button
+              onClick={handleChapterSubmit}
+              className="bg-green-500 text-white py-2 px-4 rounded-full"
+            >
+              Submit Chapter Answers
+            </button>
+
+            {!isLastChapter ? (
+              <button
+                onClick={handleNextChapter}
+                className="bg-blue-500 text-white py-2 px-4 rounded-full"
+              >
+                Next Chapter
+              </button>
+            ) : (
+              <button
+                onClick={handleTrainingSubmit}
+                className="bg-purple-500 text-white py-2 px-4 rounded-full"
+              >
+                Submit Training Answers
+              </button>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -54,15 +54,15 @@ export default function TrainingCard() {
             </h2>
 
             {/* Training Description */}
-            <p className="text-gray-700 mb-4">{training.description}</p>
+            <p className="text-gray-700 mb-4">{training?.description}</p>
 
             {/* Training Department and Position */}
             <div className="text-gray-600 text-sm mb-4">
               <p>
-                <strong className="font-bold">Department:</strong> {training.department}
+                <strong className="font-bold">Department:</strong> {training?.department}
               </p>
               <p>
-                <strong>Position:</strong> {training.position}
+                <strong>Position:</strong> {training?.position}
               </p>
             </div>
 
