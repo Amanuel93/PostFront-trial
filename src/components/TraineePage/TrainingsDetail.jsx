@@ -105,211 +105,6 @@
 
 // export default TrainingsDetail;
 
-
-// import React, { useState, useEffect } from "react";
-// import { useNavigate, useParams } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
-// import {
-//   fetchChapterByIdStart,
-//   resetChapter,
-//   fetchTrainingChapterByIdStart,
-//   submitChapterAnswerStart,
-// } from "../../redux/chapterSlice";
-// import { saveTrainingAnswersStart } from "../../redux/trainingSlice";
-// import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
-
-// const TrainingsDetail = () => {
-//   const [answers, setAnswers] = useState({});
-//   const [trainingAnswers, setTrainingAnswers] = useState([]);
-//   const [showReadingMaterial, setShowReadingMaterial] = useState(true);
-//   const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
-
-//   const navigate = useNavigate();
-//   const dispatch = useDispatch();
-//   const { trainingId } = useParams();
-
-//   const { trainingChapter, chapter, loading, error } = useSelector(
-//     (state) => state.chapter
-//   );
-
-//   const chapterId = trainingChapter?.chapters?.[currentChapterIndex]?.id;
-
-//   // Corrected formatAnswers function
-//   const formatAnswers = (answers, questions) => {
-//     return {
-//       answers: Object.entries(answers).map(([key, value]) => {
-//         const questionIndex = parseInt(key.replace("question", ""), 10); // Extract the index from the key
-//         const question = questions?.[questionIndex]; // Match the index to the question array
-
-//         if (!question) {
-//           console.warn(`Question not found for index ${questionIndex}`);
-//           return null;
-//         }
-
-//         return {
-//           questionId: question.id, // Use the correct question ID
-//           selectedOption: value,
-//         };
-//       }).filter((item) => item !== null), // Remove any null entries
-//     };
-//   };
-
-//   useEffect(() => {
-//     dispatch(resetChapter());
-//     if (chapterId) {
-//       dispatch(fetchChapterByIdStart({ id: chapterId }));
-//     }
-//   }, [dispatch, chapterId]);
-
-//   useEffect(() => {
-//     if (trainingId) {
-//       dispatch(fetchTrainingChapterByIdStart({ id: trainingId }));
-//     }
-//   }, [dispatch, trainingId]);
-
-//   const handleAnswerChange = (questionId, answer) => {
-//     setAnswers((prevAnswers) => ({
-//       ...prevAnswers,
-//       [questionId]: answer,
-//     }));
-//   };
-
-//   const handleChapterSubmit = () => {
-//     if (chapterId && chapter?.Questions) {
-//       const formattedAnswers = formatAnswers(answers, chapter.Questions);
-//       console.log("Formatted Answers:", formattedAnswers); // Debugging
-//       dispatch(submitChapterAnswerStart({ chapterId, ...formattedAnswers }));
-//       setTrainingAnswers((prev) => [...prev, ...formattedAnswers.answers]);
-//       setAnswers({});
-//     }
-//   };
-
-//   const handleTrainingSubmit = () => {
-//     if (trainingId && trainingAnswers.length > 0) {
-//       console.log(trainingAnswers)
-//       dispatch(saveTrainingAnswersStart({ trainingId, answers: trainingAnswers }));
-//     }
-//   };
-
-//   const handleNextChapter = () => {
-//     setCurrentChapterIndex((prevIndex) => prevIndex + 1);
-//   };
-
-//   const docs = [
-//     {
-//       uri: `http://localhost:5000/${chapter?.readingMaterial.replace(/\\/g, "/")}`,
-//       fileType: "pdf",
-//     },
-//   ];
-
-//   const isLastChapter = currentChapterIndex >= (trainingChapter?.chapters?.length || 1) - 1;
-
-//   return (
-//     <div className="max-w-6xl mx-auto mt-2 px-6 bg-white rounded-lg shadow-lg p-2">
-//       <button
-//         onClick={() => setShowReadingMaterial(!showReadingMaterial)}
-//         className="mb-2 px-4 py-2 bg-indigo-500 text-white font-semibold rounded-full shadow-md hover:bg-indigo-600 transition duration-200"
-//       >
-//         {showReadingMaterial ? "View Questions" : "View Reading Material"}
-//       </button>
-
-//       {!showReadingMaterial ? (
-//         <div className="mt-6 space-y-4">
-//           <h2 className="text-2xl font-bold text-center text-indigo-600 mb-4">Questions</h2>
-//           <form className="space-y-3">
-//             {chapter?.Questions?.map((question, index) => (
-//               <div key={index} className="p-4 bg-indigo-100 rounded-lg shadow">
-//                 <p className="font-semibold text-gray-800">{`Q${index + 1}: ${question.questionText}`}</p>
-//                 {question.type === "multiple-choice" && (
-//                   <ul className="pl-4 mt-2 space-y-1 text-gray-600 list-none">
-//                     {question.options?.map((option, i) => (
-//                       <li key={i} className="pl-4 text-gray-700 flex items-center space-x-2">
-//                         <input
-//                           type="radio"
-//                           id={`question${index}-option${i}`}
-//                           name={`question${index}`}
-//                           value={option}
-//                           checked={answers[`question${index}`] === option}
-//                           onChange={() => handleAnswerChange(`question${index}`, option)}
-//                           className="mr-2"
-//                         />
-//                         <label htmlFor={`question${index}-option${i}`}>{option}</label>
-//                       </li>
-//                     ))}
-//                   </ul>
-//                 )}
-//                 {question.type === "true-false" && (
-//                   <div className="mt-2">
-//                     <label>
-//                       <input
-//                         type="radio"
-//                         name={`question${index}`}
-//                         value="true"
-//                         checked={answers[`question${index}`] === "true"}
-//                         onChange={() => handleAnswerChange(`question${index}`, "true")}
-//                         className="mr-2"
-//                       />
-//                       True
-//                     </label>
-//                     <label className="ml-4">
-//                       <input
-//                         type="radio"
-//                         name={`question${index}`}
-//                         value="false"
-//                         checked={answers[`question${index}`] === "false"}
-//                         onChange={() => handleAnswerChange(`question${index}`, "false")}
-//                         className="mr-2"
-//                       />
-//                       False
-//                     </label>
-//                   </div>
-//                 )}
-//               </div>
-//             ))}
-//           </form>
-//         </div>
-//       ) : (
-//         <div className="mt-6">
-//           <DocViewer
-//             documents={docs}
-//             pluginRenderers={DocViewerRenderers}
-//             style={{ height: "100%" }}
-//             config={{ header: { disableHeader: true } }}
-//           />
-//         </div>
-//       )}
-
-//       <div className="flex justify-between mt-4">
-//         <button
-//           onClick={handleChapterSubmit}
-//           className="bg-green-500 text-white py-2 px-4 rounded-full"
-//         >
-//           Submit Chapter Answers
-//         </button>
-
-//         <button
-//           onClick={handleNextChapter}
-//           className={`bg-blue-500 text-white py-2 px-4 rounded-full ${isLastChapter ? "bg-gray-500 cursor-not-allowed" : ""}`}
-//           disabled={isLastChapter}
-//         >
-//           {isLastChapter ? "End of Training" : "Next Chapter"}
-//         </button>
-
-//         {isLastChapter && (
-//           <button
-//             onClick={handleTrainingSubmit}
-//             className="bg-purple-500 text-white py-2 px-4 rounded-full"
-//           >
-//             Submit Training Answers
-//           </button>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default TrainingsDetail;
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -379,7 +174,7 @@ const TrainingsDetail = () => {
   const handleTrainingSubmit = () => {
     if (trainingId && submittedAnswers.length > 0) {
       dispatch(saveTrainingAnswersStart({ trainingId, answers: submittedAnswers }));
-      navigate("/trainings-summary"); // Redirect after submission
+      // navigate("/trainings-summary"); // Redirect after submission
     }
   };
 
@@ -417,10 +212,10 @@ const TrainingsDetail = () => {
               <h2 className="text-2xl font-bold text-center text-indigo-600 mb-4">Questions</h2>
               <form className="space-y-3">
                 {chapter?.Questions?.map((question, index) => (
-                  <div key={index} className="p-4 bg-indigo-100 rounded-lg shadow">
+                  <div key={index} className="p-4 bg-indigo-100 rounded-lg shadow flex flex-col">
                     <p className="font-semibold text-gray-800">{`Q${index + 1}: ${question.questionText}`}</p>
                     {question.type === "multiple-choice" && (
-                      <ul className="pl-4 mt-2 space-y-1 text-gray-600 list-none">
+                      <ul className="mt-2 space-y-1 text-gray-600 list-none">
                         {question.options?.map((option, i) => (
                           <li key={i} className="pl-4 text-gray-700 flex items-center space-x-2">
                             <input
@@ -430,7 +225,7 @@ const TrainingsDetail = () => {
                               value={option}
                               checked={answers[`question${index}`] === option}
                               onChange={() => handleAnswerChange(`question${index}`, option)}
-                              className="mr-2"
+                              className="mr-2 w-4 h-4"
                             />
                             <label htmlFor={`question${index}-option${i}`}>{option}</label>
                           </li>
@@ -438,26 +233,26 @@ const TrainingsDetail = () => {
                       </ul>
                     )}
                     {question.type === "true-false" && (
-                      <div className="mt-2">
-                        <label>
+                      <div className="mt-2 fle">
+                        <label className="flex items-center">
                           <input
                             type="radio"
                             name={`question${index}`}
                             value="true"
                             checked={answers[`question${index}`] === "true"}
                             onChange={() => handleAnswerChange(`question${index}`, "true")}
-                            className="mr-2"
+                            className="w-4 h-4 mr-2"
                           />
                           True
                         </label>
-                        <label className="ml-4">
+                        <label className="flex items-center">
                           <input
                             type="radio"
                             name={`question${index}`}
                             value="false"
                             checked={answers[`question${index}`] === "false"}
                             onChange={() => handleAnswerChange(`question${index}`, "false")}
-                            className="mr-2"
+                            className="w-4 h-4 mr-2 bg-indigo-900"
                           />
                           False
                         </label>
