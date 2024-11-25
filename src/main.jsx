@@ -1,15 +1,3 @@
-// import { StrictMode } from "react";
-// import { createRoot } from "react-dom/client";
-// import App from "./App.jsx";
-// import "./index.css";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-
-// createRoot(document.getElementById("root")).render(
-//   <StrictMode>
-//     <App />
-//   </StrictMode>
-// );
 
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -50,6 +38,7 @@ import { GrScorecard } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
 import { IoIosSettings } from "react-icons/io";
 import { FaPeopleLine } from 'react-icons/fa6';
+import { RiAdminLine } from "react-icons/ri";
 import MyTraining from "./components/TraineePage/MyTraining";
 import MyProfile from "./components/TraineePage/MyProfile";
 import TSetting from "./components/TraineePage/TSetting";
@@ -58,6 +47,10 @@ import TrainingLayout from "./components/Layouts/TrainingLayout";
 import TrainingContent from "./components/Dashboard/TrainingContent";
 import ChapterContent from "./components/Dashboard/ChapterContent";
 import ExamLayout from "./components/Layouts/ExamLayout";
+import { useSelector } from "react-redux";
+
+const AppRouter = () => {
+  const {user} = useSelector((state) => state.auth);
 
 const Menus = [
   { title: 'Dashboard', icon: <MdDashboardCustomize className='text-3xl' />, link: '/Trainee' },
@@ -71,7 +64,10 @@ const AdminMenus = [
     { title: 'Trainees', icon: <FaPeopleLine className='text-3xl' />, link: '/Dashboard/trainee' },
     { title: 'Trainings', icon: <IoDocumentsOutline className='text-3xl' />, link: '/Dashboard/trainings' },
     { title: 'Add Training', icon: <IoAdd className='text-3xl' />, link: '/Dashboard/add' },
-    { title: 'Settings', icon: <IoIosSettings className='text-3xl' />, link: '/Dashboard/setting' },
+    ...(user?.role === 'super-admin'
+      ? [{ title: 'Create Admin', icon: <RiAdminLine className='text-3xl' />, link: '/Dashboard/create' }]
+      : []),
+      { title: 'Setting', icon: <IoIosSettings className='text-3xl' />, link: '/Dashboard/setting' },
   ];
 
 const router = createBrowserRouter([
@@ -194,14 +190,6 @@ const router = createBrowserRouter([
         }
     ]
   },
-  // {
-  //   path: ":trainingId/details",
-  //   element: <TrainingsDetail />
-  //  },
-  //  {
-  //   path: ":trainingId/chapter/:chapterId",
-  //   element: <ReadingandQuestions />
-  //  },
   {
     path:"Training",
     element:<ExamLayout/>,
@@ -218,11 +206,15 @@ const router = createBrowserRouter([
   }
 ]);
 
+ return <RouterProvider router={router} />; 
+};
+
 // Render the RouterProvider with the router inside the ThemeProvider
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store = {store}>
-     <RouterProvider router={router} />
+     {/* <RouterProvider router={router} /> */}
+     <AppRouter />
     </Provider>
   </React.StrictMode>,
 );
