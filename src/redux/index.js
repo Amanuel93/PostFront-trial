@@ -7,7 +7,7 @@ import trainingReducer from './trainingSlice'
 import chapterReducer from './chapterSlice'
 import questionReducer from './questionSlice'
 import startTrainingReducer from './startTraining'
-
+import AdminReducer from './createAdminSlice'
 
 const rootReducer = combineReducers({
   stepper: stepperReducer,
@@ -16,6 +16,7 @@ const rootReducer = combineReducers({
   chapter: chapterReducer,
   questions: questionReducer,
   startTraining: startTrainingReducer,
+  admin: AdminReducer,
 });
 
 export default rootReducer;

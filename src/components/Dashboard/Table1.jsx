@@ -46,18 +46,16 @@ const data = [
     training:'HUMAN RESOURCE'
   },
   {
-    
     id: "5",
-   name: 721,
-   email: "carmella@hotmail.com",
+    name: 721,
+    email: "carmella@hotmail.com",
     training:'HUMAN RESOURCE'
 },
    
   {
-   
     id: "6",
-   name: 316,
-   email: "ken99@yahoo.com",
+    name: 316,
+    email: "ken99@yahoo.com",
     training:'HUMAN RESOURCE'
   },  {
     id: "7",
@@ -65,8 +63,8 @@ const data = [
    email: "Abe45@gmail.com",
   },  {
     id: "8",
-   name: 837,
-   email: "Monserrat44@gmail.com",
+    name: 837,
+    email: "Monserrat44@gmail.com",
     training:'HUMAN RESOURCE'
   },
   {

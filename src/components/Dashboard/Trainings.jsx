@@ -44,6 +44,7 @@ import Deletealert from './Deletealert';
 const Trainings = () => {
   const dispatch = useDispatch();
   const { trainings, loading, error } = useSelector((state) => state.training);
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(fetchTrainingsStart());
@@ -52,7 +53,7 @@ const Trainings = () => {
 
   return (
     <div>
-      <DashboardHeader header="Trainings" role="Admin" />
+      <DashboardHeader header="Trainings" role={user?.name} />
       <div className="min-h-screen px-4 py-10">
         {loading ? (
           <p>Loading...</p>

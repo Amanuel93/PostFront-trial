@@ -102,7 +102,7 @@ export default function SignUp() {
               value={phone}
               onChange={(e) => setPhoneNumber(e.target.value)}
               className="w-full px-4 py-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-              placeholder="123-456-7890"
+              placeholder="+251-945-678-901"
               required
             />
           </div>

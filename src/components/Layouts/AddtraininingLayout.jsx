@@ -45,10 +45,12 @@ import React, { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { StepperWithContent } from "../Dashboard/Stepper";
 import DashboardHeader from "../Dashboard/DashboardHeader";
+import { useDispatch, useSelector } from 'react-redux';
 
 const AddtrainingLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useSelector((state) => state.auth);
 
   // Get the dynamic title based on the current path
   const getHeaderTitle = () => {
@@ -68,7 +70,7 @@ const AddtrainingLayout = () => {
   return (
     <div className=''>
       {/* Dynamic Header Title */}
-      <DashboardHeader header={getHeaderTitle()} role="Admin"/>
+      <DashboardHeader header={getHeaderTitle()} role={user?.name}/>
       {/* Stepper Component */}
       <StepperWithContent />
       <div className="h-screen flex-1 overflow-y-auto">

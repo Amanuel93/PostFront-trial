@@ -34,6 +34,7 @@ import ReadingandQuestions from "./components/TraineePage/ReadingandQuestions";
 import Complete from "./components/TraineePage/Complete";
 import { MdDashboardCustomize } from 'react-icons/md';
 import { IoAdd, IoDocumentsOutline,IoArrowBackCircleSharp } from 'react-icons/io5';
+import { GrUserAdmin } from "react-icons/gr";
 import { GrScorecard } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
 import { IoIosSettings } from "react-icons/io";
@@ -48,6 +49,8 @@ import TrainingContent from "./components/Dashboard/TrainingContent";
 import ChapterContent from "./components/Dashboard/ChapterContent";
 import ExamLayout from "./components/Layouts/ExamLayout";
 import { useSelector } from "react-redux";
+import CreateAdmin from "./components/Dashboard/CreateAdmin";
+import Admins from "./components/Dashboard/Admins";
 
 const AppRouter = () => {
   const {user} = useSelector((state) => state.auth);
@@ -62,10 +65,13 @@ const Menus = [
 const AdminMenus = [
     { title: 'Dashboard', icon: <MdDashboardCustomize className='text-3xl' />, link: '/Dashboard' },
     { title: 'Trainees', icon: <FaPeopleLine className='text-3xl' />, link: '/Dashboard/trainee' },
+    ...(user?.role === 'super-admin'
+      ? [{ title: 'Admins', icon: <GrUserAdmin  className='text-3xl' />, link: '/Dashboard/admins' }]
+      : []),
     { title: 'Trainings', icon: <IoDocumentsOutline className='text-3xl' />, link: '/Dashboard/trainings' },
     { title: 'Add Training', icon: <IoAdd className='text-3xl' />, link: '/Dashboard/add' },
     ...(user?.role === 'super-admin'
-      ? [{ title: 'Create Admin', icon: <RiAdminLine className='text-3xl' />, link: '/Dashboard/create' }]
+      ? [{ title: 'Create Admin', icon: <RiAdminLine className='text-3xl' />, link: '/Dashboard/create-admin' }]
       : []),
       { title: 'Setting', icon: <IoIosSettings className='text-3xl' />, link: '/Dashboard/setting' },
   ];
@@ -118,6 +124,10 @@ const router = createBrowserRouter([
         ]
       },
       {
+        path:"create-admin",
+        element: <CreateAdmin/>
+      },
+      {
         path:"add",
         element:<AddtrainingLayout/>,
         children:[
@@ -148,6 +158,10 @@ const router = createBrowserRouter([
             element:<TraineeDetail/>
           }
         ]
+      },
+      {
+        path:'admins',
+        element:<Admins/>
       },
       {
         path:"setting",

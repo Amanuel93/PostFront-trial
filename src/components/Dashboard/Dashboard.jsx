@@ -4,6 +4,7 @@ import DashboardHeader from './DashboardHeader'
 import Piechart from './Piechart'
 import Barchart from './Barchart'
 import Table from './Table1'
+import { useDispatch, useSelector } from 'react-redux';
 
 const Dashboard = () => {
   const stat =  { 
@@ -12,9 +13,10 @@ const Dashboard = () => {
     totalTrainees:"100",
     totalAdmins:"100"
   }
+  const { user } = useSelector((state) => state.auth);
   return (
     <div className=''>
-       <DashboardHeader header="Dashboard" role="Admin"/>
+       <DashboardHeader header="Dashboard" role={user?.name}/>
       <div className="px-4 py-8">
        <Card stat = {stat}/>
       </div>

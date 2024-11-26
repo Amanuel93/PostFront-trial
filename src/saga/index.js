@@ -5,6 +5,8 @@ import trainingSaga from './trainingSaga';
 import chapterSaga from './chapterSaga';
 import questionSaga from './questionSaga';
 import startTrainingSaga from './startSaga'
+import  adminSaga  from './createAdminSaga';
+
 
 export default function* rootSaga() {
   yield all([
@@ -13,5 +15,6 @@ export default function* rootSaga() {
     chapterSaga(),
     questionSaga(),
     startTrainingSaga(),
+    adminSaga(),
   ]);
 }

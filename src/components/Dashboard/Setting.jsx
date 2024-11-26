@@ -15,6 +15,7 @@
 import React, { useState } from 'react';
 import DashboardHeader from './DashboardHeader'
 import { IoKeySharp } from "react-icons/io5";
+import { useDispatch, useSelector } from 'react-redux';
 
 const Setting = () => {
   const [formData, setFormData] = useState({
@@ -55,9 +56,11 @@ const Setting = () => {
     setSuccess('Password updated successfully.');
   };
 
+  const { user } = useSelector((state) => state.auth);
+
   return (
     <div>
-     <DashboardHeader header="Setting" role="Admin"/>
+     <DashboardHeader header="Setting" role={user?.name}/>
      <div className="min-h-screen flex justify-center items-center">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
         <div className="flex space-x-2">
