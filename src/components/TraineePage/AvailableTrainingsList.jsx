@@ -93,6 +93,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTrainingsStart } from '../../redux/trainingSlice';
+import PlannerAlert from './PlannerAlert';
 
 const AvailableTrainingsList = () => {
   const dispatch = useDispatch();
@@ -166,7 +167,7 @@ const AvailableTrainingsList = () => {
                 key={item.id}
                 className="bg-white shadow-2xl rounded-lg px-4 pt-6 py-2 max-w-sm transition-transform transform hover:scale-105 hover:shadow-2xl"
               >
-                <div className="text-lg font-bold mb-2 text-indigo-700">{item.title}</div>
+                <div className="text-lg mb-2 text-indigo-700 overflow-hidden whitespace-nowrap text-ellipsis">{item.title}</div>
                 <p className="text-gray-600 text-justify">{item.description}</p>
                 <div className="mt-3">
                   <span className="block text-sm font-semibold text-gray-500">
@@ -184,10 +185,13 @@ const AvailableTrainingsList = () => {
                     Duration: <span className="text-gray-700"> {item.duration}</span>
                   </span>
                 </div>
-                <div className="flex justify-between mt-2">
+                <div className="flex justify-between items-center mt-4">
+                  <div className="">
+                    <PlannerAlert id = {item.id} />
+                  </div>
                   <div className="flex space-x-4 px-2">
                     <Link to={`/Trainee/${item.id}/passcode`}>
-                      <button>Enroll</button>
+                      <button className='bg-indigo-500 text-white font-light px-6 py-1 rounded-sm'>Enroll</button>
                     </Link>
                   </div>
                 </div>

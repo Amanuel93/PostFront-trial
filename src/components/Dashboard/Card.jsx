@@ -15,7 +15,7 @@ const Card = ({stat}) => {
           <IoDocumentsOutline/>
         </div>
         <div className="flex flex-col">
-          <h1 className=' md:text-[24px] text-12px'>{stat.totalTraining}</h1>
+          <h1 className=' md:text-[24px] text-12px'>{stat?.totalTraining}</h1>
           <p className=' md:text-[22px] text-[16px]'>Trainings</p>
         </div>
       </div>
@@ -26,7 +26,7 @@ const Card = ({stat}) => {
           < FaFileCircleQuestion />
         </div>
         <div className="flex flex-col">
-          <h1 className=' md:text-[24px] text-12px'>{stat.totalQuestions}</h1>
+          <h1 className=' md:text-[24px] text-12px'>{stat?.totalQuestions}</h1>
           <p className=' md:text-[22px] text-[16px]'>Questions</p>
         </div>
       </div>
@@ -37,7 +37,7 @@ const Card = ({stat}) => {
           <FaPeopleLine/>
         </div>
         <div className="flex flex-col">
-          <h1 className='md:text-[24px] text-12px'>{stat.totalTrainees}</h1>
+          <h1 className='md:text-[24px] text-12px'>{stat?.totalTrainees}</h1>
           <p className=' md:text-[22px] text-[16px]'>Trainees</p>
         </div>
       </div>
@@ -48,7 +48,7 @@ const Card = ({stat}) => {
           <BsPeopleFill/>
         </div>
         <div className="flex flex-col">
-          <h1 className='md:text-[24px] text-12px'>{stat.totalAdmins}</h1>
+          <h1 className='md:text-[24px] text-12px'>{stat?.totalAdmins}</h1>
           <p className='md:text-[22px] text-[16px]'>Admins</p>
         </div>
       </div>

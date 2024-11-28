@@ -1,16 +1,138 @@
-import * as React from "react";
+
+// import React, { useEffect } from "react";
+// import { useSelector, useDispatch } from "react-redux";
+// import { fetchplannedTrainingsStart } from "../../redux/planSlice";
+// import {
+//   flexRender,
+//   useReactTable,
+//   getCoreRowModel,
+//   getPaginationRowModel,
+//   getSortedRowModel,
+//   getFilteredRowModel,
+// } from "@tanstack/react-table";
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
+// import { Button } from "@/components/ui/button";
+
+// // Define columns for the table
+// const columns = [
+//   { accessorKey: "id", header: "ID" },
+//   { accessorKey: "name", header: "Name" },
+//   { accessorKey: "email", header: "E-mail" },
+//   { accessorKey: "training", header: "Training" },
+// ];
+
+// export default function DataTableDemo() {
+//   const dispatch = useDispatch();
+//   const { plannedTraining, loading, error } = useSelector(
+//     (state) => state.planning
+//   );
+ 
+
+//   // Map data to match table columns
+//   const transformedData = plannedTraining?.map((training) => ({
+//     id: training?.id,
+//     name: training?.username,
+//     email: training?.email || "N/A",
+//     training: training?.trainingName || "N/A",
+//   }));
+
+//   useEffect(() => {
+//     dispatch(fetchplannedTrainingsStart());
+//   }, [dispatch]);
+
+//   const table = useReactTable({
+//     data: transformedData || [],
+//     columns,
+//     getCoreRowModel: getCoreRowModel(),
+//     getPaginationRowModel: getPaginationRowModel(),
+//     getSortedRowModel: getSortedRowModel(),
+//     getFilteredRowModel: getFilteredRowModel(),
+//     initialState: {
+//       pagination: { pageSize: 5 },
+//     },
+//   });
+
+//   if (loading) return <p>Loading...</p>;
+//   if (error) return <p>Error: {error}</p>;
+
+//   return (
+//     <div className="w-full overflow-x-auto">
+//       <div className="rounded-md border min-w-[600px]">
+//         <Table>
+//           <TableHeader className="bg-indigo-950 text-white">
+//             {table.getHeaderGroups().map((headerGroup) => (
+//               <TableRow key={headerGroup.id}>
+//                 {headerGroup.headers.map((header) => (
+//                   <TableHead key={header.id} className="text-center">
+//                     {flexRender(
+//                       header.column.columnDef.header,
+//                       header.getContext()
+//                     )}
+//                   </TableHead>
+//                 ))}
+//               </TableRow>
+//             ))}
+//           </TableHeader>
+//           <TableBody>
+//             {table.getRowModel().rows.length ? (
+//               table.getRowModel().rows.map((row) => (
+//                 <TableRow key={row.id}>
+//                   {row.getVisibleCells().map((cell) => (
+//                     <TableCell key={cell.id}>
+//                       {flexRender(
+//                         cell.column.columnDef.cell,
+//                         cell.getContext()
+//                       )}
+//                     </TableCell>
+//                   ))}
+//                 </TableRow>
+//               ))
+//             ) : (
+//               <TableRow>
+//                 <TableCell colSpan={columns.length}>No results</TableCell>
+//               </TableRow>
+//             )}
+//           </TableBody>
+//         </Table>
+//       </div>
+//       <div className="flex justify-between py-4">
+//         <Button
+//           variant="outline"
+//           onClick={() => table.previousPage()}
+//           disabled={!table.getCanPreviousPage()}
+//         >
+//           Previous
+//         </Button>
+//         <Button
+//           variant="outline"
+//           onClick={() => table.nextPage()}
+//           disabled={!table.getCanNextPage()}
+//         >
+//           Next
+//         </Button>
+//       </div>
+//     </div>
+//   );
+// }
+
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchplannedTrainingsStart } from "../../redux/planSlice";
 import {
   flexRender,
+  useReactTable,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-
 import {
   Table,
   TableBody,
@@ -19,248 +141,120 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 
-// Sample Data
-const data = [
-  {
-    id: "1",
-    name: 316,
-    email: "ken99@yahoo.com",
-    training:'HUMAN RESOURCE'
-  },  {
-    id: "2",
-    name: 242,
-    email: "Abe45@gmail.com",
-    training:'HUMAN RESOURCE'
-  },  {
-    id:"3",
-   name: 837,
-   email: "Monserrat44@gmail.com",
-    training:'HUMAN RESOURCE'
-  },
-  {
-
-    id: "4",
-   name: 874,
-   email: "Silas22@gmail.com",
-    training:'HUMAN RESOURCE'
-  },
-  {
-    id: "5",
-    name: 721,
-    email: "carmella@hotmail.com",
-    training:'HUMAN RESOURCE'
-},
-   
-  {
-    id: "6",
-    name: 316,
-    email: "ken99@yahoo.com",
-    training:'HUMAN RESOURCE'
-  },  {
-    id: "7",
-   name: 242,
-   email: "Abe45@gmail.com",
-  },  {
-    id: "8",
-    name: 837,
-    email: "Monserrat44@gmail.com",
-    training:'HUMAN RESOURCE'
-  },
-  {
-
-    id: "g",
-   name: 874,
-   email: "Silas22@gmail.com",
-    training:'HUMAN RESOURCE'
-  },
-  {
-    
-    id: "9",
-   name: 721,
-   email: "carmella@hotmail.comhkhfkhf",
-    training:'HUMAN RESOURCE'
-  }
-  ,
-  {
-    id: "10",
-    name: 316,
-   email: "ken99@yahoo.com",
-    training:'HUMAN RESOURCE'
-  },  {
-    id: "11",
-   name: 242,
-   email: "Abe45yj@gmail.com",
-    training:'HUMAN RESOURCE'
-  },
-  {
-    
-    id: "12",
-    name: 837,
-    email: "Monserrat44@gmail.com",
-    training:'HUMAN RESOURCE'
-  },
-  {
-
-    id: "13",
-    name: 874,
-   email: "Silas22yjuyj@gmail.com",
-    training:'HUMAN RESOURCE'
-  },
-  {
-
-    id: "14",
-    name: 721,
-   email: "carmellajtyj@hotmail.comhkhfkhf",
-    training:'HUMAN RESOURCE'
-  },
-];
-
-export  const columns = [
-  {
-     accessorKey: "id",
-     header: "Id",
-     cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("id")}</div>
-     ),
-},
- {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("name")}</div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: "E-mail",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("email")}</div>
-    ),
-  },
-  {
-    accessorKey: "training",
-    header: "Training",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("training")}</div>
-    ),
-  },
+// Define columns for the table
+const columns = [
+  { accessorKey: "id", header: "ID" },
+  { accessorKey: "name", header: "Name" },
+  { accessorKey: "email", header: "E-mail" },
+  { accessorKey: "training", header: "Training" },
 ];
 
 export default function DataTableDemo() {
-  const [sorting, setSorting] = React.useState([]);
-  const [columnFilters, setColumnFilters] = React.useState(
-    []
+  const dispatch = useDispatch();
+  const { plannedTraining, loading, error } = useSelector(
+    (state) => state.planning
   );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState({});
-  const [rowSelection, setRowSelection] = React.useState({});
+
+  // Map data to match table columns
+  const transformedData = plannedTraining?.map((training) => ({
+    id: training?.id,
+    name: training?.username,
+    email: training?.email || "N/A",
+    training: training?.trainingName || "N/A",
+  }));
+
+  useEffect(() => {
+    dispatch(fetchplannedTrainingsStart());
+  }, [dispatch]);
 
   const table = useReactTable({
-    data,
+    data: transformedData || [],
     columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
     initialState: {
-        pagination: {
-          pageSize: 5, // Default rows per page set to 5
-        },
-      },
+      pagination: { pageSize: 5 },
+    },
   });
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="w-full overflow-x-auto">
-    <div className="rounded-md border min-w-[600px]">
-      <Table>
-        <TableHeader className="bg-indigo-950 text-white">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
+      <div className="rounded-md border min-w-[600px]">
+        <Table className="w-full border-collapse">
+          <TableHeader className="bg-indigo-950 text-white">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="text-center">
+                {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className="px-4 py-2 text-center text-black text-[16px]"
-                    style={{ flexBasis: `${100 / columns.length}%` }}
+                    className="p-3 text-center border border-gray-300"
                   >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
                   </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-         {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row) => (
-          <TableRow
-            key={row.id}
-            data-state={row.getIsSelected() && "selected"}
-            className="text-center even:bg-yellow-200 even:text-black hover:text-black"
-          >
-          {row.getVisibleCells().map((cell) => (
-           <TableCell key={cell.id} className="px-4 py-2">
-            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-          </TableCell>
-          ))}
-       </TableRow>
-         ))
-        ) : (
-    <TableRow>
-      <TableCell colSpan={columns.length} className="h-24 text-center">
-        No results.
-      </TableCell>
-    </TableRow>
-  )}
-</TableBody>
-
-      </Table>
-    </div>
-
-    {/* Pagination and Row Count Section */}
-    <div className="flex items-center justify-between space-x-2 py-4">
-      <div className="text-sm text-muted-foreground">
-        {table.getFilteredRowModel().rows.length} of{" "}
-        {table.getCoreRowModel().rows.length} row(s)
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  className="text-center hover:bg-gray-100"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className="p-3 text-center border border-gray-300"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center py-4"
+                >
+                  No results
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex justify-between py-4">
         <Button
           variant="outline"
-          size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className="bg-indigo-900 text-white"
         >
           Previous
         </Button>
         <Button
           variant="outline"
-          size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className="bg-indigo-900 text-white"
         >
           Next
         </Button>
       </div>
     </div>
-  </div>
-  
   );
 }
+

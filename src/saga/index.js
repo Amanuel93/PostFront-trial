@@ -6,6 +6,9 @@ import chapterSaga from './chapterSaga';
 import questionSaga from './questionSaga';
 import startTrainingSaga from './startSaga'
 import  adminSaga  from './createAdminSaga';
+import traineeSaga from './traineeSaga'
+import summarySaga from './summarySaga';
+import planSaga from './planSaga'
 
 
 export default function* rootSaga() {
@@ -16,5 +19,8 @@ export default function* rootSaga() {
     questionSaga(),
     startTrainingSaga(),
     adminSaga(),
+    traineeSaga(),
+    summarySaga(),
+    planSaga(),
   ]);
 }
