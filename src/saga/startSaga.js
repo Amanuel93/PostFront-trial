@@ -8,7 +8,8 @@ function* startSaga(action) {
   try {
     const { trainingId, passcode} = action.payload;
     const response = yield call(axiosInstance.post, `/trainee/start-training/${trainingId}`, { passcode });
-    yield put(startTrainingSuccess(response.data.progress));
+    yield put(startTrainingSuccess(response.data));
+    console.log(response.data)
   } catch (error) {
     yield put(startTrainingFailure(error.response?.data?.message || 'Failed to start training'));
   }

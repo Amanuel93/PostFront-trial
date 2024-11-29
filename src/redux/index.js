@@ -11,6 +11,7 @@ import AdminReducer from './createAdminSlice'
 import traineeReducer from './traineeSice'
 import summaryReducer from './summarySlice'
 import planReducer from './planSlice'
+import timeReducer from './timerSlice'
 
 const rootReducer = combineReducers({
   stepper: stepperReducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   trainees: traineeReducer,
   summary: summaryReducer,
   planning: planReducer,
+  timer: timeReducer,
 });
 
 export default rootReducer;

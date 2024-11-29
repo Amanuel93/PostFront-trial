@@ -274,7 +274,7 @@ const Form = () => {
           <div>
             <label className="block text-gray-600 font-semibold mb-1" htmlFor="passcode">Passcode</label>
             <input
-              type="password"
+              type="text"
               id="passcode"
               name="passcode"
               value={formData.passcode}
