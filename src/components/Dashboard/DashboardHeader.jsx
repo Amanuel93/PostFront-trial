@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/authSlice'; 
 
-const DashboardHeader = ({header,role,logo}) => {
+const DashboardHeader = ({header,role,logo,time}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,8 +26,14 @@ const DashboardHeader = ({header,role,logo}) => {
        <img src={logo} alt="Ethiopost logo"  className="h-14 w-14 rounded-full"/>
       </Link>
       }
-      <div className="flex  space-x-4 pr-3">
-        <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-4 pr-3">
+        <div className="flex space-x-2">
+          <h1>Time Left :</h1>
+          <h1 className='font-bold'>
+           {time}
+          </h1>
+        </div>
+        <div className="flex items-center space-x-1">
             <BsPersonCircle/>
             <h1>{role}</h1>
         </div>

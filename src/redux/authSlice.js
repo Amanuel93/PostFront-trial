@@ -40,6 +40,7 @@ const authSlice = createSlice({
       state.user = null;
       localStorage.removeItem('user'); // Clear user from localStorage
       localStorage.removeItem('token'); // Clear token from localStorage if required
+      localStorage.removeItem('timeLeft'); // Clear token from localStorage if required
     },
     resetPasswordStart: (state) => {
       state.loading = true;

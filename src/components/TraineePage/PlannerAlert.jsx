@@ -55,7 +55,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TbClockCog } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchplannedTrainingsStart, clearMessages } from "../../redux/planSlice"; // Import your actions
+import {  planTrainingStart,fetchplannedTrainingsStart, clearMessages } from "../../redux/planSlice"; // Import your actions
 
 export default function PlannerAlert({ id }) {
   console.log(id);
@@ -76,7 +76,7 @@ export default function PlannerAlert({ id }) {
       return;
     }
     // Dispatch the action to plan the training
-    dispatch(fetchplannedTrainingsStart({ id, plannedDate }));
+    dispatch( planTrainingStart({ id, plannedDate }));
   };
 
   // Clear success/error messages when the component is unmounted or after success

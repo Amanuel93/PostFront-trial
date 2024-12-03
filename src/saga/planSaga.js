@@ -16,7 +16,7 @@ function* planTrainingSaga(action) {
     console.log(id)
     console.log(plannedDate)
     const url = `/trainee/plan/${id}`
-    const response = yield call(axiosInstance.post,url,{plannedDate});
+    const response = yield call(axiosInstance.post,url, {plannedDate});
     yield put(planTrainingSuccess(response.data.message));
   } catch (error) {
     const errorMessage =

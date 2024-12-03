@@ -93,8 +93,12 @@ const chapterSlice = createSlice({
       state.success = null;
       state.error = null;
     },
+    
     resetChapter: (state) => {
       state.chapter = null;
+    },
+    resetChapterSubmission: (state) => {
+      state.chapterSubmissionStatus = null;
     },
   },
 });
@@ -123,6 +127,7 @@ export const {
   submitChapterAnswerFailure,
   clearStatus,
   resetChapter,
+  resetChapterSubmission,
 } = chapterSlice.actions;
 
 export default chapterSlice.reducer;
