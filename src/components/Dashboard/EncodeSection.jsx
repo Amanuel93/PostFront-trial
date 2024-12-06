@@ -106,7 +106,7 @@ const EncodeSection = ({ chapterId}) => {
       };
       
     console.log(formattedQuestions);
-    dispatch(createQuestionStart({ chapterId, questions: formattedQuestions }));
+    dispatch(createQuestionStart({ chapterId, questions: formattedQuestions,trainingId }));
   };
 
   return (

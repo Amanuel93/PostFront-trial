@@ -102,6 +102,7 @@ function* saveTrainingAnswersSaga(action) {
     const url = `trainee/submit/${trainingId}`
     const response = yield call(axiosInstance.post, url, {answers});
     yield put(saveTrainingAnswersSuccess(response.data));
+    console.log(response.data);
   } catch (error) {
       if (error.response) {
         // The request was made, but the server responded with a status code outside the 2xx range

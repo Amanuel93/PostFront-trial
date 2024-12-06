@@ -79,6 +79,7 @@ const trainingSlice = createSlice({
     saveTrainingAnswersSuccess: (state, action) => {
       state.loading = false;
       state.trainingSubmissionStatus = action.payload;
+      state.success = true;
     },
     saveTrainingAnswersFailure: (state, action) => {
       state.loading = false;

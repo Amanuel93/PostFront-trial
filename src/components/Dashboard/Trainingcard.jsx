@@ -8,6 +8,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import OptionMenu from './OptionMenu'
 
 const Trainingcard = ({item}) => {
+  console.log(item)
 
   const dispatch = useDispatch();
   const handleDelete = (id) => {

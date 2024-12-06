@@ -54,11 +54,26 @@ function* fetchTraineeInfoSaga(action) {
 // Fetch trainee info
 function* fetchTraineesTrainingSaga(action) {
   try {
-    const response = yield call(axiosInstance.get, `trainee/getTrainings`); // Adjust API endpoint as needed
-    yield put(fetchTraineesTrainingSuccess(response.data.data));
-    console.log(response.data)
+    const response = yield call(axiosInstance.get, 'trainee/getTrainings'); // Adjust API endpoint as needed
+    yield put(fetchTraineesTrainingSuccess(response.data));
+    console.log(response.data.data);
   } catch (error) {
-    yield put( fetchTraineesTrainingFailure(error.response?.data?.message || 'Failed to fetch trainee info'));
+    // yield put( fetchTraineesTrainingFailure(error.response?.data?.message || 'Failed to fetch trainee info'));
+    // const errorMessage = error.response?.data?.message || error.message;
+      if (error.response) {
+        // The request was made, but the server responded with a status code outside the 2xx range
+        console.error("Server error:", error.response.data);
+        yield put(fetchTraineesTrainingSuccess(error.response.data.details || error.response.data.message));
+      } else if (error.request) {
+        // The request was made, but no response was received (network error)
+        console.error("Network error:", error.request);
+        yield put(fetchTraineesTrainingSuccess("Network error: Unable to reach the server."));
+      } else {
+        // Something happened in setting up the request that triggered an error
+        console.error("Error in setting up request:", error.message);
+        yield put(fetchTraineesTrainingSuccess("An unexpected error occurred."));
+      }
+
   }
 }
 

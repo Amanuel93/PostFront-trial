@@ -56,7 +56,7 @@ const traineeSlice = createSlice({
       },
     fetchTraineesTrainingSuccess(state, action) {
       state.loading = false;
-      state.trainings = action.payload;
+      state.trainings = action.payload.data;
       },
     fetchTraineesTrainingFailure(state, action) {
       state.loading = false;

@@ -27,12 +27,16 @@ const DashboardHeader = ({header,role,logo,time}) => {
       </Link>
       }
       <div className="flex items-center space-x-4 pr-3">
+        {
+          time &&
+
         <div className="flex space-x-2">
           <h1>Time Left :</h1>
           <h1 className='font-bold'>
            {time}
           </h1>
         </div>
+        }
         <div className="flex items-center space-x-1">
             <BsPersonCircle/>
             <h1>{role}</h1>

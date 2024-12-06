@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Outlet } from 'react-router-dom';
 import DashboardHeader from "../Dashboard/DashboardHeader";
-import {setTimeLeft} from '../../redux/timerSlice'
+import Result from "../TraineePage/Result";
+import { saveTrainingAnswersStart} from "../../redux/trainingSlice";
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,8 +12,10 @@ const ExamLayout = () => {
   const { answers } = useSelector((state) => state.timer);
   // console.log(trainingName)
   console.log(answers)
-  const { training } = useSelector((state) => state.training);
+  const { training, trainingSubmissionStatus, success } = useSelector((state) => state.training);
+  const trainingId = training?.id;
   const { user } = useSelector((state) => state.auth);
+  console.log(trainingSubmissionStatus);
 
   const [timeLeft, setTimeLefts] = useState(null);
   const [timeUp, setTimeUp] = useState(false);
@@ -29,42 +32,12 @@ const ExamLayout = () => {
     return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  // Effect: Manage timer for training
-  // useEffect(() => {
-  //   let timer;
-  //   const savedTimeLeft = localStorage.getItem("timeLeft");
-
-  //   // Set initial timeLeft from local storage or training duration
-  //   if (savedTimeLeft) {
-  //     setTimeLefts(Number(savedTimeLeft));
-  //   } else if (training?.duration) {
-  //     const durationMs = convertDurationToMilliseconds(training?.duration);
-  //     setTimeLefts(durationMs);
-  //     localStorage.setItem("timeLeft", durationMs); // Save initial time
-  //   }
-
-  //   // Start the timer only if timeLeft is set and greater than 0
-  //   if (timeLeft > 0) {
-  //     timer = setInterval(() => {
-  //       setTimeLefts((prevTime) => {
-  //         if (prevTime <= 1000) {
-  //           clearInterval(timer);
-  //           setTimeUp(true); // Set time up flag
-  //           localStorage.removeItem("timeLeft"); // Clear saved time
-  //           return 0; // Timer ends
-  //         }
-  //         const newTime = prevTime - 1000;
-  //         localStorage.setItem("timeLeft", newTime); // Save new time
-  //         return newTime;
-  //       });
-  //     }, 1000); // Decrement the time every second
-  //   }
-
-  //   // Cleanup interval timer when the component unmounts or when timeLeft changes
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-  // }, [training, timeLeft]); // Dependency array should contain `training` and `timeLeft`
+  useEffect(()=>{
+    if (timeUp) {
+      dispatch(saveTrainingAnswersStart({ trainingId, answers }));
+      console.log(answers);
+    }
+  },[timeUp, dispatch,trainingId,answers])
 
   useEffect(() => {
     let timer;
@@ -117,12 +90,24 @@ const ExamLayout = () => {
       </div>
       <div className="h-screen flex-1 overflow-y-auto">
         {
-          !timeUp ?
-        <Outlet />
-        :
+          success || timeUp ?
+        // <Outlet />
         <div>
-          <h1>Your exam is submitted</h1>
+          {/* {
+            trainingSubmissionStatus?.pass ?
+            <div className="h-screen flex items-center justify-center">
+              <h1>You Finished the training successfully!</h1>
+            </div>
+              :
+             <div className="h-screen flex items-center justify-center">
+              <h1>We're sorry you failed taking the training!</h1>
+             </div>
+          } */}
+             <Result trainingSubmissionStatus={trainingSubmissionStatus} trainingName={trainingName}/>
         </div>
+        :
+
+        <Outlet/>
         }
       </div>
     </div>

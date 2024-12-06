@@ -15,10 +15,10 @@ import axiosInstance from '@/utility/axiosInstance';
 
 function* createQuestionSaga(action) {
   try {
-    const { chapterId,questions } = action.payload;
+    const { chapterId,questions,trainingId } = action.payload;
     console.log(questions)
     console.log(chapterId)
-    const url = `/admin/createQuestions/${chapterId}`;
+    const url = `/admin/createQuestions/${chapterId}/${trainingId}`;
     const response = yield call(axiosInstance.post, url, questions, {
         headers: {
           'Content-Type': 'application/json',
