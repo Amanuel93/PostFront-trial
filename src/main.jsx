@@ -1,6 +1,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Navigate } from "react-router-dom";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -51,15 +52,17 @@ import ExamLayout from "./components/Layouts/ExamLayout";
 import { useSelector } from "react-redux";
 import CreateAdmin from "./components/Dashboard/CreateAdmin";
 import Admins from "./components/Dashboard/Admins";
+import ProtectedRoute from "./components/Common/ProtectedRoute";
 
 const AppRouter = () => {
   const {user} = useSelector((state) => state.auth);
+  // const Navigate = useNavigate();
 
 const Menus = [
   { title: 'Dashboard', icon: <MdDashboardCustomize className='text-3xl' />, link: '/Trainee' },
   { title: 'My Trainings', icon: <GrScorecard className='text-3xl' />, link: '/Trainee/Mytraining' },
   { title: 'Profile', icon: <CgProfile className='text-3xl' />, link: '/Trainee/Myprofile' },
-  { title: 'Settings', icon: <IoIosSettings className='text-3xl' />, link: '/Trainee/setting' },
+  // { title: 'Settings', icon: <IoIosSettings className='text-3xl' />, link: '/Trainee/setting' },
 ];
 
 const AdminMenus = [
@@ -70,10 +73,10 @@ const AdminMenus = [
       : []),
     { title: 'Trainings', icon: <IoDocumentsOutline className='text-3xl' />, link: '/Dashboard/trainings' },
     { title: 'Add Training', icon: <IoAdd className='text-3xl' />, link: '/Dashboard/add' },
-    ...(user?.role === 'super-admin'
-      ? [{ title: 'Create Admin', icon: <RiAdminLine className='text-3xl' />, link: '/Dashboard/create-admin' }]
-      : []),
-      { title: 'Setting', icon: <IoIosSettings className='text-3xl' />, link: '/Dashboard/setting' },
+    // ...(user?.role === 'super-admin'
+    //   ? [{ title: 'Create Admin', icon: <RiAdminLine className='text-3xl' />, link: '/Dashboard/create-admin' }]
+    //   : []),
+      // { title: 'Setting', icon: <IoIosSettings className='text-3xl' />, link: '/Dashboard/change' },
   ];
 
 const router = createBrowserRouter([
@@ -98,8 +101,18 @@ const router = createBrowserRouter([
     element:<ResetPassword/>
   },
   {
-    path:"Dashboard",
-    element:React.cloneElement(<DashboardLoayout/>, { Menus: AdminMenus }),
+    // path:"Dashboard",
+    // element:React.cloneElement(
+    // <ProtectedRoute>
+    //   <DashboardLoayout/>
+    // </ProtectedRoute>
+    //   , { Menus: AdminMenus }),
+    path: "Dashboard",
+    element: (
+    <ProtectedRoute>
+      <DashboardLoayout Menus={AdminMenus} />
+    </ProtectedRoute>
+    ),
     children:[
       {
         path:"",
@@ -147,7 +160,7 @@ const router = createBrowserRouter([
       },
       {
         path:"trainee",
-        element:<TraineeLayout/>,
+        element:<ProtectedRoute><TraineeLayout/></ProtectedRoute>,
         children:[
           {
             path:"",
@@ -164,14 +177,20 @@ const router = createBrowserRouter([
         element:<Admins/>
       },
       {
-        path:"setting",
+        path:"change",
         element:<Setting/>
       },
     ]
   },
   {
-    path: "Trainee", 
-    element:React.cloneElement(<DashboardLoayout/>, { Menus: Menus }),
+    // path: "Trainee", 
+    // element:React.cloneElement(<ProtectedRoute><DashboardLoayout/></ProtectedRoute>, { Menus: Menus }),
+    path: "Trainee",
+    element: (
+    <ProtectedRoute>
+      <DashboardLoayout Menus={Menus} />
+    </ProtectedRoute>
+    ),
     children:[
         {
          element:<PersonalTrainingLayout/>,
@@ -197,7 +216,7 @@ const router = createBrowserRouter([
           element:<MyProfile/>
          },
          {
-          path:"setting",
+          path:"change",
           element:<TSetting/>
         },
         ]
@@ -206,7 +225,7 @@ const router = createBrowserRouter([
   },
   {
     path:"Training",
-    element:<ExamLayout/>,
+    element:<ProtectedRoute><ExamLayout/></ProtectedRoute>,
     children:[
      {
       path: ":trainingId/details",
@@ -217,10 +236,14 @@ const router = createBrowserRouter([
      element: <ReadingandQuestions />
     }
     ]
-  }
+  },
+  { 
+    path:"*", 
+    element:<Navigate to="/login" /> 
+  },
 ]);
 
- return <RouterProvider router={router} />; 
+ return <RouterProvider router = {router} />; 
 };
 
 // Render the RouterProvider with the router inside the ThemeProvider

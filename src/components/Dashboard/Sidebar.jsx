@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { IoArrowBackCircleSharp } from 'react-icons/io5';
 import { NavLink,Link } from 'react-router-dom';
 import logo from '../../assets/ethiopost_logo.jfif';
+import AccordionDemo from './Accordion';
 
 const Sidebar = ({Menus}) => {
   const [open, setOpen] = useState(true);
@@ -36,6 +37,9 @@ const Sidebar = ({Menus}) => {
             </span>
           </NavLink>
         ))}
+        <h1>
+          <AccordionDemo open={open}/>
+        </h1>
       </ul>
     </div>
   );

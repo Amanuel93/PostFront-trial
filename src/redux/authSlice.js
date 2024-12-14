@@ -8,6 +8,7 @@ const authSlice = createSlice({
     loading: false,
     error: null,
     successMessage: null,
+    profile:null
   },
   reducers: {
     registerUserStart: (state, action) => {
@@ -38,7 +39,7 @@ const authSlice = createSlice({
     },
     logoutUser: (state) => {
       state.user = null;
-      localStorage.removeItem('user'); // Clear user from localStorage
+      localStorage.removeItem('user');
       localStorage.removeItem('token'); // Clear token from localStorage if required
       localStorage.removeItem('timeLeft'); // Clear token from localStorage if required
     },
@@ -79,6 +80,22 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload.error;
     },
+    getProfileStart: (state) => {
+      state.loading = true;
+      state.error = null;
+      state.successMessage = '';
+    },
+    getProfileSuccess: (state, action) => {
+      state.loading = false;
+      state.profile = action.payload;
+    },
+    getProfileFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+    resetError: (state) => {
+      state.error = null;
+    }
   },
 });
 
@@ -100,6 +117,10 @@ export const {
   completeProfileStart,
   completeProfileSuccess,
   completeProfileFailure,
+  getProfileStart,
+  getProfileSuccess,
+  getProfileFailure,
+  resetError,
 } = authSlice.actions;
 
 // Export reducer

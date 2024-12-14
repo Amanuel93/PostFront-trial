@@ -27,10 +27,13 @@ const startTrainingSlice = createSlice({
       state.trainingName = null;
       localStorage.removeItem('trainingName'); // Clear from localStorage
     },
+    resetError: (state) => {
+      state.error = null;
+    }
   },
 });
 
-export const { startTrainingStart, startTrainingSuccess, startTrainingFailure, clearTrainingName } = startTrainingSlice.actions;
+export const { startTrainingStart, startTrainingSuccess, startTrainingFailure, clearTrainingName, resetError } = startTrainingSlice.actions;
 
 export default startTrainingSlice.reducer;
 

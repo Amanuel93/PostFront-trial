@@ -49,7 +49,11 @@ const questionSlice = createSlice({
     deleteQuestionFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
-    }
+    },
+    clearStatus: (state) => {
+      state.success = null;
+      state.error = null;
+    },
   }
 });
 
@@ -62,7 +66,8 @@ export const {
   updateQuestionFailure,
   deleteQuestionStart,
   deleteQuestionSuccess,
-  deleteQuestionFailure
+  deleteQuestionFailure,
+  clearStatus,
 } = questionSlice.actions;
 
 export default questionSlice.reducer;

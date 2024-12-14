@@ -44,14 +44,6 @@ const Trainingcard = ({item}) => {
     <div className="mt-3">
       <span className="block text-sm font-semibold text-gray-500">Passcode:  <span className="text-gray-700"> {item.passcode}</span></span>
     </div>
-    {/* <div className="flex justify-between">
-     <div className="mt-3">
-      <span className="block text-sm font-semibold text-gray-500">Start-date:  <span className="text-gray-700"> {item.startDate}</span></span>
-     </div>
-     <div className="mt-3">
-      <span className="block text-sm font-semibold text-gray-500">End-date:  <span className="text-gray-700"> {item.endDate}</span></span>
-     </div>
-    </div> */}
     </Link>
     <div className="flex justify-between mt-2">
       <div className="flex space-x-4 px-2">

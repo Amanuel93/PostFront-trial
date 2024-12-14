@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { nextStep, prevStep } from '../../redux/stepperSlice';
 import { useNavigate } from 'react-router-dom';
 import {
   createQuestionStart,
+  clearStatus,
   updateQuestionStart,
   deleteQuestionStart
 } from '../../redux/questionSlice';
+import Spinners from '../Common/spinner';
 
 const EncodeSection = ({ chapterId}) => {
   // State for multiple-choice and true/false questions
@@ -21,6 +23,7 @@ const EncodeSection = ({ chapterId}) => {
       type: '' // Tracks whether it's "multiple-choice" or "true-false"
     },
   ]);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -109,13 +112,28 @@ const EncodeSection = ({ chapterId}) => {
     dispatch(createQuestionStart({ chapterId, questions: formattedQuestions,trainingId }));
   };
 
-  return (
-    <div className="min-h-screen flex justify-center pt-12">
-      <div className="px-8 rounded-lg shadow-lg w-full">
-        {success && <p className="text-green-600 mt-4 text-center">{success}</p>}
-        {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
+  useEffect(()=>{
+      if(success){
+        setIsDisabled(true)
+      }
+    },[success])
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
+  useEffect(() => {
+      // Clear success or error messages after 2 seconds
+      if (success || error) {
+        const timer = setTimeout(() => {
+          dispatch(clearStatus());
+        }, 2000);
+        return () => clearTimeout(timer);
+      }
+    }, [success, error, dispatch]);
+
+  return (
+    <div className="min-h-screen flex justify-center pt-3">
+      <div className="px-8 rounded-lg shadow-lg w-full">
+        {success && <p className="bg-green-200 text-green-700 max-w-md p-2 rounded-sm">{success}</p>}
+        {error && <p className="bg-red-200 text-red-700 max-w-md p-2 rounded-sm">{error}</p>}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-y-4 pt-2">
           {questions.map((question, index) => (
             <div key={index} className="border p-4 rounded-lg mb-4">
               <h3 className="text-gray-800 font-semibold mb-2">Question {index + 1}</h3>
@@ -225,10 +243,10 @@ const EncodeSection = ({ chapterId}) => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-indigo-700 text-white px-6 py-2 rounded-lg mt-4"
-            disabled={loading}
+            className="bg-indigo-700 text-white px-6 py-2 rounded-lg mt-4 disabled:bg-indigo-200 disabled:cursor-not-allowed"
+            disabled={loading || isDisabled}
           >
-            {loading ? 'Submitting...' : 'Submit Questions'}
+            {loading ? <Spinners/> : 'Submit Questions'}
           </button>
 
           {/* Navigation Buttons */}

@@ -42,7 +42,7 @@ const trainingSlice = createSlice({
     createTrainingStart: (state) => { state.loading = true; },
     createTrainingSuccess: (state, action) => {
       state.loading = false;
-      state.success = 'Training created successfully';
+      state.success = 'Training created successfully!';
       state.trainings.push(action.payload);
       state.trainingId = action.payload.id; 
       state.showNext = true;

@@ -25,7 +25,7 @@ const Footer = () => {
                 <img src={logo}  className="w-14 h-14 rounded-full"/>
                 <p className="">POETS</p>
               </div>
-              <p className="">
+              <p className="break-normal">
               Our innovative training platform for the Post Office enhances skills, 
               boosts productivity, and fosters a culture of continuous learning. 
               Together, we're building a brighter future for our team!.

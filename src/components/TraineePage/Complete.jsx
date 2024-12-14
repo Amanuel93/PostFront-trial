@@ -112,7 +112,7 @@ export default function CompleteProfile() {
 
           {/* Experience Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Experience Description</label>
+            <label className="block text-sm font-medium text-gray-700">Your target (gaps to fill)</label>
             <textarea
               value={experience_detail}
               onChange={(e) => setExperienceDescription(e.target.value)}

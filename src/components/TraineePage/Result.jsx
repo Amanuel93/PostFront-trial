@@ -28,8 +28,11 @@ const Result = ({trainingSubmissionStatus,trainingName}) => {
             </div>
          </>
               :
-             <div className="h-screen flex items-center justify-center">
+             <div className="h-screen flex flex-col items-center justify-center">
               <h1>We're sorry you failed taking the training!</h1>
+               <Link to='/Trainee/Mytraining'>
+                <button className='bg-indigo-500 text-white px-6 py-2 rounded-sm mt-6'>Show Trainings</button>
+               </Link>
              </div>
         }
     </div>

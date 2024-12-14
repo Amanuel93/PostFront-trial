@@ -3,18 +3,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { nextStep, prevStep } from '../../redux/stepperSlice';
 import { createChapterStart, clearStatus } from '../../redux/chapterSlice';
 import { useNavigate, useParams } from 'react-router-dom';
+import Spinners from '../Common/spinner';
 
 const Form = () => {
   const [title, setTitle] = useState('');
   const [chapterNumber, setChapterNumber] = useState('');
   const [readingMaterial, setReadingMaterial] = useState(null);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { trainingId } = useParams(); // Ensure `trainingId` is being passed correctly
   const activeStep = useSelector((state) => state.stepper.activeStep);
   const steps = useSelector((state) => state.stepper.steps);
-  const { success, error, chapterId, showNext } = useSelector((state) => state.chapter);
+  const { success, error, chapterId, showNext,loading } = useSelector((state) => state.chapter);
 
   const handleFileChange = (e) => {
     setReadingMaterial(e.target.files[0]); // Make sure a file is selected
@@ -48,19 +50,29 @@ const Form = () => {
     navigate(`/Dashboard/add/${trainingId}`);
   };
 
-  useEffect(() => {
-    return () => {
-      dispatch(clearStatus());
-    };
-  }, [dispatch]);
+ useEffect(() => {
+     // Clear success or error messages after 2 seconds
+     if (success || error) {
+       const timer = setTimeout(() => {
+         dispatch(clearStatus());
+       }, 2000);
+       return () => clearTimeout(timer);
+     }
+   }, [success, error, dispatch]);
+
+  useEffect(()=>{
+      if(success){
+        setIsDisabled(true)
+      }
+    },[success])
 
   return (
     <div className="min-h-screen flex justify-center pt-12">
       <div className="px-8 rounded-lg shadow-lg w-full">
          {/* Success/Error Messages */}
-         {success && <p className="text-green-600 mt-4 text-center">{success}</p>}
-         {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
+         {success && <p className="bg-green-200 text-green-700 max-w-md p-2 rounded-sm">{success}</p>}
+         {error && <p className="bg-red-200 text-red-700 max-w-md p-2 rounded-sm">{error}</p>}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6 pt-3">
           {/* Title */}
           <div>
             <label className="block text-gray-600 font-semibold mb-2" htmlFor="title">Title</label>
@@ -105,9 +117,10 @@ const Form = () => {
           <div className="md:col-span-2">
             <button
               type="submit"
-              className="w-full bg-indigo-900 text-white py-2 px-4 rounded-lg hover:bg-indigo-500 transition duration-300 focus:outline-none focus:ring focus:ring-indigo-300"
+              disabled={isDisabled}
+              className="w-full bg-indigo-900 text-white py-2 px-4 rounded-lg hover:bg-indigo-500 transition duration-300 focus:outline-none focus:ring focus:ring-indigo-300 disabled:bg-indigo-200 disabled:cursor-not-allowed "
             >
-              Submit
+              { loading ? <Spinners/> : 'Create chapter' }
             </button>
           </div>
         </form>

@@ -15,7 +15,10 @@ import {
   resetPasswordFailure,
   completeProfileStart,
   completeProfileSuccess,
-  completeProfileFailure
+  completeProfileFailure,
+  getProfileStart,
+  getProfileSuccess,
+  getProfileFailure,
 } from '../redux/authSlice';
 import axiosInstance from '@/utility/axiosInstance'; // Import your API functions
 
@@ -40,7 +43,7 @@ function* loginUser(action) {
     console.log(response.data.userResponse.role);
     console.log(response.data.token);
   } catch (error) {
-    yield put(loginUserFailure(error.message));
+    yield put(loginUserFailure(error.response?.data?.message));
   }
 }
 
@@ -103,6 +106,17 @@ function* completeProfile(action) {
   }
 }
 
+function* getProfileSaga(action) {
+  try {
+    // Correcting the axiosInstance.get call by passing url in parentheses
+    const response = yield call(axiosInstance.get, 'trainee/getProfile');
+    yield put(getProfileSuccess(response.data.profile));
+    console.log(response.data)
+  } catch (error) {
+    yield put(getProfileFailure(error.message));
+  }
+}
+
 // Watcher Saga
 export default function* authSaga() {
   yield takeLatest('auth/registerUserStart', registerUser);
@@ -110,6 +124,7 @@ export default function* authSaga() {
   yield takeLatest('auth/sendResetPasswordStart', sendResetPassword);
   yield takeLatest('auth/resetPasswordStart', ResetPassword);
   yield takeLatest('auth/completeProfileStart',completeProfile);
+  yield takeLatest('auth/getProfileStart',getProfileSaga);
 }
 
 

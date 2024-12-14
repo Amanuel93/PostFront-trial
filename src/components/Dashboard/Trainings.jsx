@@ -40,6 +40,8 @@ import DashboardHeader from './DashboardHeader';
 import Trainingcard from './Trainingcard';
 import { fetchTrainingsStart, deleteTrainingStart } from '../../redux/trainingSlice';
 import Deletealert from './Deletealert';
+import { Spinner } from "@material-tailwind/react";
+import { TiFolderOpen } from "react-icons/ti";
 
 const Trainings = () => {
   const dispatch = useDispatch();
@@ -56,7 +58,9 @@ const Trainings = () => {
       <DashboardHeader header="Trainings" role={user?.name} />
       <div className="min-h-screen px-4 py-10">
         {loading ? (
-          <p>Loading...</p>
+          <div className="w-full flex flex-col h-72 items-center justify-center space-y-4">
+            <Spinner className="h-16 w-16" color="indigo"/>
+           </div>
         ) : error ? (
           <p>Error: {error}</p>
         ) : (
@@ -67,6 +71,14 @@ const Trainings = () => {
                 item={item}
               />
             ))}
+          </div>
+        )}
+        {trainings?.length ==0  && (
+          <div className="flex items-center justify-center">
+            <div className="h-96 space-y-2 flex flex-col justify-center items-center">
+               <TiFolderOpen className='text-9xl text-gray-500'/>
+                <h1 className='text-gray-500'>No trainings available.</h1>
+              </div>
           </div>
         )}
       </div>

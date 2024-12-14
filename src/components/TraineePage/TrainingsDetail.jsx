@@ -463,7 +463,7 @@ const TrainingsDetail = () => {
                       </ul>
                     )}
                     {question.type === "true-false" && (
-                      <div className="mt-2 flex">
+                      <div className="mt-2 flex space-x-2">
                         <label className="flex items-center">
                           <input
                             type="radio"
