@@ -33,6 +33,7 @@ const AvailableTrainingsList = () => {
     }
     setActiveFilter(department);
   };
+  console.log(filteredTraining)
 
   return (
     <div className="pt-8 flex flex-col">
@@ -72,7 +73,7 @@ const AvailableTrainingsList = () => {
          </div>
          }
         {error && <p className="text-red-500">Check you internet connection.</p>}
-        {!filteredTraining && (
+        {filteredTraining.length === 0 && (
           <div className="flex items-center justify-center h-60">
             <h1>No trainings available.</h1>
           </div>

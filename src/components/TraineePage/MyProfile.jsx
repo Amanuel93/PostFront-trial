@@ -56,7 +56,7 @@ const MyProfile = () => {
           <div className="mt-1">
             <p>Department: <span className="text-gray-800">{profile?.department || 'N/A'}</span></p>
             <p>Years of Experience: <span className="text-gray-800">{profile?.years_of_experience || 'N/A'} years</span></p>
-            <p>Experience Details: <span className="text-gray-800">{profile?.experience_detail || 'No additional details'}</span></p>
+            <p>Purpose: <span className="text-gray-800">{profile?.experience_detail || 'No additional details'}</span></p>
           </div>
         </div>
 
