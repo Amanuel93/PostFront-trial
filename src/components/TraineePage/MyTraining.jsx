@@ -10,10 +10,9 @@ const MyTraining = () => {
   const dispatch = useDispatch();
 
   // Get the training data and loading state from the Redux store
-  const { trainings, loading, error } = useSelector((state) => state.trainees);
+  const { trainings, loading} = useSelector((state) => state.trainees);
   console.log(trainings)
   console.log(loading)
-  
   // Fetch the trainee's training data when the component mounts
   useEffect(() => {
     dispatch(fetchTraineesTrainingStart());
@@ -25,10 +24,10 @@ const MyTraining = () => {
       {/* {!trainings && <p className="text-center text-blue-500">You havent taken any training yet</p>} */}
 
       {/* Error state */}
-      {error && <div className="h-60 flex items-center justify-center text-red-500">Check your internet connection!</div>}
+      {/* { error && <div className="h-60 flex items-center justify-center text-red-500">Check your internet connection!</div>} */}
 
       {/* Trainings */}
-      {!loading && !error && trainings?.length > 0 && (
+      {!loading && trainings?.length > 0 && (
         <div className="bg-white shadow-md rounded-lg p-6">
           <h3 className="text-xl font-semibold mb-4">Enrolled Trainings</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -75,7 +74,7 @@ const MyTraining = () => {
       </div>
       )}
 
-      {!loading && !error && !trainings && 
+      {!loading && !trainings && 
       // <p className="text-center text-blue-500">You havent taken any training yet</p>
       <div className="h-96 space-y-2 flex flex-col justify-center items-center">
         <TiFolderOpen className='text-9xl text-gray-500'/>

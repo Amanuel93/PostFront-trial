@@ -60,19 +60,10 @@ function* fetchTraineesTrainingSaga(action) {
   } catch (error) {
     // yield put( fetchTraineesTrainingFailure(error.response?.data?.message || 'Failed to fetch trainee info'));
     // const errorMessage = error.response?.data?.message || error.message;
-      if (error.response) {
+      
         // The request was made, but the server responded with a status code outside the 2xx range
         console.error("Server error:", error.response.data);
-        yield put(fetchTraineesTrainingFailure(error.response.data.details || error.response.data.message));
-      } else if (error.request) {
-        // The request was made, but no response was received (network error)
-        console.error("Network error:", error.request);
-        yield put(fetchTraineesTrainingFailure("Network error: Unable to reach the server."));
-      } else {
-        // Something happened in setting up the request that triggered an error
-        console.error("Error in setting up request:", error.message);
-        yield put(fetchTraineesTrainingFailure("An unexpected error occurred."));
-      }
+        yield put(fetchTraineesTrainingFailure('Failed to fetch trainees training info'));
 
   }
 }
