@@ -14,8 +14,6 @@ const MyTraining = () => {
   console.log(trainings)
   console.log(loading)
   
-  
-
   // Fetch the trainee's training data when the component mounts
   useEffect(() => {
     dispatch(fetchTraineesTrainingStart());
@@ -27,7 +25,7 @@ const MyTraining = () => {
       {/* {!trainings && <p className="text-center text-blue-500">You havent taken any training yet</p>} */}
 
       {/* Error state */}
-      {error && <div className="text-center text-red-500">Check your internet connection!</div>}
+      {error && <div className="h-60 flex items-center justify-center text-red-500">Check your internet connection!</div>}
 
       {/* Trainings */}
       {!loading && !error && trainings?.length > 0 && (
@@ -77,7 +75,7 @@ const MyTraining = () => {
       </div>
       )}
 
-      {!loading&&!error&&!trainings && 
+      {!loading && !error && !trainings && 
       // <p className="text-center text-blue-500">You havent taken any training yet</p>
       <div className="h-96 space-y-2 flex flex-col justify-center items-center">
         <TiFolderOpen className='text-9xl text-gray-500'/>

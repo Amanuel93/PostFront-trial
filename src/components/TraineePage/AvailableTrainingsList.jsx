@@ -73,7 +73,7 @@ const AvailableTrainingsList = () => {
          </div>
          }
         {error && <p className="text-red-500">Check you internet connection.</p>}
-        {filteredTraining.length === 0 && (
+        {!loading && !error && filteredTraining.length === 0 && (
           <div className="flex items-center justify-center h-60">
             <h1>No trainings available.</h1>
           </div>
